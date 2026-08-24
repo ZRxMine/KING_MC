@@ -1,44 +1,49 @@
-# کد برای ایجاد یک شخصیت سه‌بعدی در بازی
+# 3D Character with Jump Button
 
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شخصیت سه‌بعدی</title>
+    <title>3D Character with Jump Button</title>
     <style>
         body {
-            margin: 0;
-            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
         }
-        canvas {
-            display: block;
+        #character {
+            width: 100px;
+            height: 100px;
+            background-color: #3498db;
+            border-radius: 50%;
+            position: relative;
+            transform: translateZ(0);
+        }
+        #jumpButton {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas"></canvas>
-    <script src="https://threejs.org/build/three.js"></script>
+    <div id="character"></div>
+    <button id="jumpButton">Jump</button>
     <script>
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('gameCanvas') });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        
-        const geometry = new THREE.BoxGeometry();
-        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-        
-        camera.position.z = 5;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
-            renderer.render(scene, camera);
-        }
-        animate();
+        document.getElementById('jumpButton').addEventListener('click', function() {
+            alert('Jump action triggered!');
+        });
     </script>
 </body>
 </html>
