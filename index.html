@@ -2,21 +2,42 @@
 <html dir="rtl" lang="fa">
 <head>
     <meta charset="UTF-8">
-    <title>ارسال تیکت</title>
-    <style>
-        body { font-family: sans-serif; padding: 20px; }
-        textarea { width: 100%; height: 100px; margin: 10px 0; }
-        button { padding: 10px 20px; cursor: pointer; }
-    </style>
+    <title>پنل تیکت</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    <h1>ارسال تیکت پشتیبانی</h1>
-    
-    <!-- این فرم مستقیماً به Formspree وصل میشه -->
-    <form action="https://formspree.io/f/xqpakwpn" method="POST">
-        <label>متن تیکت خود را بنویسید:</label>
-        <textarea name="message" required></textarea>
+
+    <h1>ارسال تیکت به پشتیبانی</h1>
+    <form id="ticket-form">
+        <textarea id="user-message" placeholder="متن تیکت خود را اینجا بنویسید..." required style="width: 100%; height: 100px;"></textarea>
+        <br>
         <button type="submit">ارسال تیکت</button>
     </form>
+
+    <script>
+        // آدرس پروژه رو برات ساختم
+        const SUPABASE_URL = 'https://ytpolvkzmxmzvuyteaac.supabase.co'; 
+        
+        // این قسمت رو باید با اون کلید (anon public key) خودت عوض کنی
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0cG9sdmt6bXhtenZ1eXRlYWFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk2NTk4NTYsImV4cCI6MjEwNTIzNTg1Nn0.yCjO1G6jYE5QIMxkrKemWuzH_jiLujRVpoPfXsyKl2c'; 
+
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        document.getElementById('ticket-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msg = document.getElementById('user-message').value;
+
+            const { data, error } = await supabase
+                .from('tickets')
+                .insert([{ user_message: msg }]);
+
+            if (error) {
+                alert('خطا در ارسال: ' + error.message);
+            } else {
+                alert('تیکت شما با موفقیت ثبت شد!');
+                document.getElementById('ticket-form').reset();
+            }
+        });
+    </script>
 </body>
 </html>
