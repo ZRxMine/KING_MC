@@ -1,25 +1,23 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NovaCraft | سرور ماینکرفت</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KING MC | سرور ماینکرفت</title>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800;900&display=swap');
 
     :root {
       --bg: #070812;
-      --bg2: #0d1020;
-      --card: rgba(21, 25, 48, .75);
-      --border: rgba(255,255,255,.1);
+      --card: rgba(21, 25, 48, .78);
+      --border: rgba(255, 255, 255, .1);
       --primary: #8b5cf6;
       --secondary: #22d3ee;
       --pink: #ec4899;
       --text: #f5f7ff;
       --muted: #a6acc6;
       --success: #34d399;
-      --danger: #fb7185;
     }
 
     * {
@@ -36,8 +34,8 @@
       font-family: "Vazirmatn", sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 10% 10%, rgba(139,92,246,.18), transparent 30%),
-        radial-gradient(circle at 90% 25%, rgba(34,211,238,.12), transparent 30%),
+        radial-gradient(circle at 10% 10%, rgba(139, 92, 246, .2), transparent 30%),
+        radial-gradient(circle at 90% 25%, rgba(34, 211, 238, .13), transparent 30%),
         var(--bg);
       min-height: 100vh;
       overflow-x: hidden;
@@ -48,7 +46,7 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      opacity: .22;
+      opacity: .2;
       background-image:
         linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
@@ -63,7 +61,7 @@
 
     button {
       font-family: inherit;
-      border: 0;
+      border: none;
       cursor: pointer;
     }
 
@@ -72,12 +70,13 @@
       margin: auto;
     }
 
+    /* Header */
     header {
       position: fixed;
       z-index: 20;
       top: 0;
       width: 100%;
-      background: rgba(7,8,18,.7);
+      background: rgba(7, 8, 18, .75);
       backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--border);
     }
@@ -94,25 +93,28 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 21px;
+      font-size: 22px;
       font-weight: 900;
       white-space: nowrap;
+      letter-spacing: 1px;
     }
 
     .logo-icon {
-      width: 42px;
-      height: 42px;
+      width: 43px;
+      height: 43px;
       display: grid;
       place-items: center;
       border-radius: 13px;
+      color: white;
+      font-size: 25px;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
-      box-shadow: 0 0 25px rgba(139,92,246,.5);
+      box-shadow: 0 0 25px rgba(139, 92, 246, .55);
     }
 
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 25px;
+      gap: 24px;
       color: var(--muted);
       font-size: 14px;
     }
@@ -143,17 +145,17 @@
 
     .btn:hover {
       transform: translateY(-3px);
-      border-color: rgba(255,255,255,.25);
-      background: rgba(255,255,255,.14);
+      background: rgba(255,255,255,.15);
+      border-color: rgba(255,255,255,.28);
     }
 
     .btn-primary {
       background: linear-gradient(135deg, var(--primary), var(--pink));
-      box-shadow: 0 12px 35px rgba(139,92,246,.28);
+      box-shadow: 0 12px 35px rgba(139, 92, 246, .28);
     }
 
     .btn-primary:hover {
-      box-shadow: 0 15px 45px rgba(139,92,246,.5);
+      box-shadow: 0 15px 45px rgba(139, 92, 246, .5);
     }
 
     .btn-cyan {
@@ -161,6 +163,7 @@
       color: #00151b;
     }
 
+    /* Hero */
     .hero {
       min-height: 790px;
       padding-top: 150px;
@@ -198,12 +201,16 @@
     }
 
     @keyframes pulse {
-      70% { box-shadow: 0 0 0 10px transparent; }
-      100% { box-shadow: 0 0 0 0 transparent; }
+      70% {
+        box-shadow: 0 0 0 10px transparent;
+      }
+      100% {
+        box-shadow: 0 0 0 0 transparent;
+      }
     }
 
     h1 {
-      font-size: clamp(38px, 6vw, 78px);
+      font-size: clamp(40px, 6vw, 78px);
       line-height: 1.1;
       font-weight: 900;
       letter-spacing: -2px;
@@ -262,8 +269,7 @@
       width: 400px;
       height: 400px;
       border-radius: 35% 65% 60% 40%;
-      background: linear-gradient(135deg, rgba(139,92,246,.7), rgba(34,211,238,.5));
-      filter: blur(1px);
+      background: linear-gradient(135deg, rgba(139,92,246,.75), rgba(34,211,238,.5));
       opacity: .7;
       transform: rotate(25deg);
       animation: float 6s ease-in-out infinite;
@@ -273,21 +279,26 @@
     }
 
     .hero-art::after {
-      content: "✦";
+      content: "♛";
       position: absolute;
       inset: 0;
       display: grid;
       place-items: center;
-      font-size: 170px;
+      font-size: 175px;
       color: rgba(255,255,255,.35);
       transform: rotate(-25deg);
     }
 
     @keyframes float {
-      0%,100% { transform: rotate(25deg) translateY(0); }
-      50% { transform: rotate(30deg) translateY(-25px); }
+      0%, 100% {
+        transform: rotate(25deg) translateY(0);
+      }
+      50% {
+        transform: rotate(30deg) translateY(-25px);
+      }
     }
 
+    /* Sections */
     section {
       padding: 95px 0;
       position: relative;
@@ -307,6 +318,7 @@
       color: var(--muted);
     }
 
+    /* Stats */
     .stats {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -340,6 +352,7 @@
       font-size: 13px;
     }
 
+    /* Categories */
     .categories {
       display: flex;
       justify-content: center;
@@ -354,6 +367,7 @@
       background: rgba(255,255,255,.06);
       color: var(--muted);
       border: 1px solid var(--border);
+      transition: .25s;
     }
 
     .category.active,
@@ -362,6 +376,7 @@
       background: linear-gradient(135deg, var(--primary), var(--pink));
     }
 
+    /* Products */
     .products {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -398,6 +413,7 @@
       color: var(--muted);
       display: block;
       min-height: 40px;
+      line-height: 1.7;
     }
 
     .product-bottom {
@@ -412,6 +428,7 @@
       color: #67e8f9;
       font-weight: 800;
       white-space: nowrap;
+      font-size: 13px;
     }
 
     .buy-btn {
@@ -421,6 +438,7 @@
       background: rgba(139,92,246,.35);
     }
 
+    /* Features */
     .features {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -444,6 +462,7 @@
       font-size: 14px;
     }
 
+    /* Download */
     .download {
       display: flex;
       align-items: center;
@@ -462,6 +481,7 @@
       margin-top: 9px;
     }
 
+    /* FAQ */
     .faq {
       max-width: 800px;
       margin: auto;
@@ -487,6 +507,7 @@
       line-height: 1.9;
     }
 
+    /* Footer */
     footer {
       padding: 35px 0;
       border-top: 1px solid var(--border);
@@ -495,6 +516,7 @@
       font-size: 13px;
     }
 
+    /* Modal */
     .modal-backdrop {
       display: none;
       position: fixed;
@@ -521,8 +543,14 @@
     }
 
     @keyframes modalIn {
-      from { opacity: 0; transform: scale(.85) translateY(20px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
+      from {
+        opacity: 0;
+        transform: scale(.85) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
     }
 
     .modal-head {
@@ -575,24 +603,68 @@
       opacity: 1;
     }
 
+    /* Responsive */
     @media (max-width: 900px) {
-      .hero-content { width: 100%; }
-      .hero-art { opacity: .25; }
-      .products { grid-template-columns: repeat(2, 1fr); }
-      .stats { grid-template-columns: repeat(2, 1fr); }
-      .features { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
+      .hero-content {
+        width: 100%;
+      }
+
+      .hero-art {
+        opacity: .25;
+      }
+
+      .products {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
     }
 
     @media (max-width: 560px) {
-      .hero { min-height: 700px; }
-      .hero-art { width: 280px; height: 280px; }
-      .products { grid-template-columns: 1fr; }
-      .download { display: block; }
-      .download .btn { margin-top: 20px; }
-      .server-box { width: 100%; justify-content: space-between; }
-      .server-address { font-size: 12px; }
-      .nav-actions .btn { padding: 9px 11px; font-size: 12px; }
+      .hero {
+        min-height: 700px;
+      }
+
+      .hero-art {
+        width: 280px;
+        height: 280px;
+      }
+
+      .products {
+        grid-template-columns: 1fr;
+      }
+
+      .download {
+        display: block;
+      }
+
+      .download .btn {
+        margin-top: 20px;
+      }
+
+      .server-box {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .server-address {
+        font-size: 12px;
+      }
+
+      .nav-actions .btn {
+        padding: 9px 11px;
+        font-size: 12px;
+      }
     }
   </style>
 </head>
@@ -604,8 +676,8 @@
     <div class="container">
       <nav>
         <a href="#home" class="logo">
-          <span class="logo-icon">✦</span>
-          NovaCraft
+          <span class="logo-icon">♛</span>
+          KING MC
         </a>
 
         <div class="nav-links">
@@ -617,8 +689,13 @@
         </div>
 
         <div class="nav-actions">
-          <button class="btn" onclick="openModal('loginModal')">ورود</button>
-          <button class="btn btn-primary" onclick="openModal('registerModal')">ثبت‌نام</button>
+          <button class="btn" onclick="openModal('loginModal')">
+            ورود
+          </button>
+
+          <button class="btn btn-primary" onclick="openModal('registerModal')">
+            ثبت‌نام
+          </button>
         </div>
       </nav>
     </div>
@@ -626,80 +703,117 @@
 
   <!-- صفحه اصلی -->
   <main id="home">
+
     <section class="hero">
       <div class="container">
         <div class="hero-content">
+
           <div class="badge">
             <span class="pulse"></span>
-            سرور آنلاین است و آماده ورود شماست
+            سرور KING MC آنلاین است
           </div>
 
           <h1>
-            دنیای خودت را<br>
-            <span class="gradient-text">بساز و فتح کن</span>
+            به قلمرو<br>
+            <span class="gradient-text">KING MC</span> خوش آمدی
           </h1>
 
           <p>
             به یکی از جذاب‌ترین سرورهای ماینکرفت بپیوند.
             در بخش‌های SMP، SkyMine و Practice با دوستانت بازی کن،
-            آیتم‌های ویژه بگیر و قهرمان سرور شو.
+            آیتم‌های ویژه بگیر و پادشاه سرور شو.
           </p>
 
           <div class="hero-buttons">
-            <a href="#shop" class="btn btn-primary">مشاهده فروشگاه</a>
-            <button class="btn btn-cyan" onclick="copyServer()">کپی آدرس سرور</button>
+            <a href="#shop" class="btn btn-primary">
+              مشاهده فروشگاه
+            </a>
+
+            <button class="btn btn-cyan" onclick="copyServer()">
+              کپی آدرس سرور
+            </button>
           </div>
 
           <div class="server-box">
             <span class="server-address" id="serverAddress">
-              play.novacraft.ir:25565
+              play.kingmc.ir:25565
             </span>
-            <button class="copy-btn" onclick="copyServer()">کپی</button>
+
+            <button class="copy-btn" onclick="copyServer()">
+              کپی
+            </button>
           </div>
+
         </div>
 
         <div class="hero-art"></div>
       </div>
     </section>
 
-    <!-- آمار -->
+    <!-- آمار سرور -->
     <div class="container">
       <div class="stats">
+
         <div class="stat-card">
           <strong>۲۴/۷</strong>
           <span>فعالیت سرور</span>
         </div>
+
         <div class="stat-card">
           <strong>+۱۲K</strong>
           <span>بازیکن ثبت‌نام‌شده</span>
         </div>
+
         <div class="stat-card">
           <strong>+۳۵۰</strong>
           <span>آیتم فروشگاه</span>
         </div>
+
         <div class="stat-card">
           <strong>۱۲۴</strong>
           <span>بازیکن آنلاین</span>
         </div>
+
       </div>
     </div>
 
     <!-- فروشگاه -->
     <section id="shop">
       <div class="container">
+
         <div class="section-title">
-          <h2>فروشگاه سرور</h2>
+          <h2>فروشگاه KING MC</h2>
           <p>آیتم‌ها و امکانات ویژه خودت را همین حالا تهیه کن</p>
         </div>
 
         <div class="categories">
-          <button class="category active" data-filter="all">همه</button>
-          <button class="category" data-filter="smp">آیتم‌های SMP</button>
-          <button class="category" data-filter="sky">آیتم‌های SkyMine</button>
-          <button class="category" data-filter="practice">Practice</button>
-          <button class="category" data-filter="rank">رنک‌ها</button>
-          <button class="category" data-filter="key">کلیدها</button>
-          <button class="category" data-filter="coin">کوین</button>
+          <button class="category active" data-filter="all">
+            همه
+          </button>
+
+          <button class="category" data-filter="smp">
+            آیتم‌های SMP
+          </button>
+
+          <button class="category" data-filter="sky">
+            آیتم‌های SkyMine
+          </button>
+
+          <button class="category" data-filter="practice">
+            Practice
+          </button>
+
+          <button class="category" data-filter="rank">
+            رنک‌ها
+          </button>
+
+          <button class="category" data-filter="key">
+            کلیدها
+          </button>
+
+          <button class="category" data-filter="coin">
+            کوین
+          </button>
         </div>
 
         <div class="products">
@@ -707,80 +821,120 @@
           <div class="product card" data-category="rank">
             <div class="product-image">👑</div>
             <h3>رنک Legend</h3>
-            <small>دسترسی به امکانات ویژه و تگ اختصاصی</small>
+            <small>
+              دسترسی به امکانات ویژه و تگ اختصاصی
+            </small>
+
             <div class="product-bottom">
               <span class="price">۲۵۰,۰۰۰ تومان</span>
-              <button class="buy-btn" onclick="addToCart('رنک Legend')">خرید</button>
+              <button class="buy-btn" onclick="addToCart('رنک Legend')">
+                خرید
+              </button>
             </div>
           </div>
 
           <div class="product card" data-category="smp">
             <div class="product-image">⚔️</div>
             <h3>شمشیر افسانه‌ای</h3>
-            <small>شمشیر قدرتمند مخصوص بخش SMP</small>
+            <small>
+              شمشیر قدرتمند مخصوص بخش SMP
+            </small>
+
             <div class="product-bottom">
               <span class="price">۸۵,۰۰۰ تومان</span>
-              <button class="buy-btn" onclick="addToCart('شمشیر افسانه‌ای')">خرید</button>
+              <button class="buy-btn" onclick="addToCart('شمشیر افسانه‌ای')">
+                خرید
+              </button>
             </div>
           </div>
 
           <div class="product card" data-category="sky">
             <div class="product-image">☁️</div>
             <h3>جزیره ویژه SkyMine</h3>
-            <small>جزیره اختصاصی با امکانات بیشتر</small>
+            <small>
+              جزیره اختصاصی با امکانات بیشتر
+            </small>
+
             <div class="product-bottom">
               <span class="price">۱۲۰,۰۰۰ تومان</span>
-              <button class="buy-btn" onclick="addToCart('جزیره ویژه SkyMine')">خرید</button>
+              <button class="buy-btn" onclick="addToCart('جزیره ویژه SkyMine')">
+                خرید
+              </button>
             </div>
           </div>
 
           <div class="product card" data-category="practice">
             <div class="product-image">🏹</div>
             <h3>Practice Kit</h3>
-            <small>کیت حرفه‌ای برای تمرین PvP</small>
+            <small>
+              کیت حرفه‌ای برای تمرین PvP
+            </small>
+
             <div class="product-bottom">
               <span class="price">۵۰,۰۰۰ تومان</span>
-              <button class="buy-btn" onclick="addToCart('Practice Kit')">خرید</button>
+              <button class="buy-btn" onclick="addToCart('Practice Kit')">
+                خرید
+              </button>
             </div>
           </div>
 
           <div class="product card" data-category="key">
             <div class="product-image">🔑</div>
             <h3>کلید Legendary</h3>
-            <small>شانس دریافت آیتم‌های بسیار کمیاب</small>
+            <small>
+              شانس دریافت آیتم‌های بسیار کمیاب
+            </small>
+
             <div class="product-bottom">
               <span class="price">۳۰,۰۰۰ تومان</span>
-              <button class="buy-btn" onclick="addToCart('کلید Legendary')">خرید</button>
+              <button class="buy-btn" onclick="addToCart('کلید Legendary')">
+                خرید
+              </button>
             </div>
           </div>
 
           <div class="product card" data-category="coin">
             <div class="product-image">🪙</div>
             <h3>۵۰۰۰ کوین</h3>
-            <small>مناسب خرید آیتم از فروشگاه داخل بازی</small>
+            <small>
+              مناسب خرید آیتم از فروشگاه داخل بازی
+            </small>
+
             <div class="product-bottom">
               <span class="price">۴۰,۰۰۰ تومان</span>
-              <button class="buy-btn" onclick="addToCart('۵۰۰۰ کوین')">خرید</button>
+              <button class="buy-btn" onclick="addToCart('۵۰۰۰ کوین')">
+                خرید
+              </button>
             </div>
           </div>
 
           <div class="product card" data-category="smp">
             <div class="product-image">🛡️</div>
             <h3>زره ندرایت</h3>
-            <small>زره کامل برای شروع ماجراجویی</small>
+            <small>
+              زره کامل برای شروع ماجراجویی
+            </small>
+
             <div class="product-bottom">
               <span class="price">۹۰,۰۰۰ تومان</span>
-              <button class="buy-btn" onclick="addToCart('زره ندرایت')">خرید</button>
+              <button class="buy-btn" onclick="addToCart('زره ندرایت')">
+                خرید
+              </button>
             </div>
           </div>
 
           <div class="product card" data-category="rank">
             <div class="product-image">💎</div>
             <h3>رنک Diamond</h3>
-            <small>رنک محبوب با امکانات جذاب</small>
+            <small>
+              رنک محبوب با امکانات جذاب
+            </small>
+
             <div class="product-bottom">
               <span class="price">۱۵۰,۰۰۰ تومان</span>
-              <button class="buy-btn" onclick="addToCart('رنک Diamond')">خرید</button>
+              <button class="buy-btn" onclick="addToCart('رنک Diamond')">
+                خرید
+              </button>
             </div>
           </div>
 
@@ -791,62 +945,78 @@
     <!-- امکانات -->
     <section id="features">
       <div class="container">
+
         <div class="section-title">
-          <h2>چرا NovaCraft؟</h2>
+          <h2>چرا KING MC؟</h2>
           <p>همه‌چیز برای یک تجربه حرفه‌ای آماده شده است</p>
         </div>
 
         <div class="features">
+
           <div class="feature card">
             <div class="feature-icon">⚡</div>
             <h3>سرعت بالا</h3>
-            <p>سرور قدرتمند با پینگ مناسب و بدون لگ برای تجربه‌ای روان.</p>
+            <p>
+              سرور قدرتمند با پینگ مناسب و بدون لگ برای تجربه‌ای روان.
+            </p>
           </div>
 
           <div class="feature card">
             <div class="feature-icon">🛡️</div>
             <h3>امنیت بالا</h3>
-            <p>محافظت از حساب، آیتم‌ها و اطلاعات بازیکنان در تمام ساعات.</p>
+            <p>
+              محافظت از حساب، آیتم‌ها و اطلاعات بازیکنان در تمام ساعات.
+            </p>
           </div>
 
           <div class="feature card">
             <div class="feature-icon">🎮</div>
             <h3>گیم‌مودهای متنوع</h3>
-            <p>SMP، SkyMine، Practice و بخش‌های جذاب دیگر در انتظار تو هستند.</p>
+            <p>
+              SMP، SkyMine، Practice و بخش‌های جذاب دیگر در انتظار تو هستند.
+            </p>
           </div>
+
         </div>
       </div>
     </section>
 
-    <!-- دانلود -->
+    <!-- دانلود لانچر -->
     <section id="download">
       <div class="container">
+
         <div class="download">
           <div>
-            <h2>لانچر NovaCraft را دانلود کن</h2>
-            <p>با لانچر اختصاصی، سریع‌تر و راحت‌تر وارد سرور شو.</p>
+            <h2>لانچر KING MC را دانلود کن</h2>
+            <p>
+              با لانچر اختصاصی، سریع‌تر و راحت‌تر وارد سرور شو.
+            </p>
           </div>
+
           <button class="btn btn-primary" onclick="downloadLauncher()">
             دانلود لانچر
           </button>
         </div>
+
       </div>
     </section>
 
     <!-- قوانین -->
     <section id="rules">
       <div class="container">
+
         <div class="section-title">
           <h2>قوانین و آموزش</h2>
           <p>قبل از ورود، قوانین سرور را مطالعه کن</p>
         </div>
 
         <div class="faq">
+
           <details>
             <summary>چگونه وارد سرور شوم؟</summary>
             <p>
               ابتدا ماینکرفت را باز کن، بخش Multiplayer را انتخاب کن،
-              سپس آدرس play.novacraft.ir را وارد کن.
+              سپس آدرس play.kingmc.ir را وارد کن.
             </p>
           </details>
 
@@ -865,6 +1035,7 @@
               داخل سرور برای شما فعال خواهند شد.
             </p>
           </details>
+
         </div>
       </div>
     </section>
@@ -872,8 +1043,9 @@
     <!-- پشتیبانی -->
     <section id="support">
       <div class="container">
+
         <div class="section-title">
-          <h2>پشتیبانی</h2>
+          <h2>پشتیبانی KING MC</h2>
           <p>اگر مشکلی داری، برای ما تیکت ارسال کن</p>
         </div>
 
@@ -882,19 +1054,21 @@
             ایجاد تیکت پشتیبانی
           </button>
         </div>
+
       </div>
     </section>
+
   </main>
 
+  <!-- Footer -->
   <footer>
-    <div class="container">
-      تمامی حقوق برای NovaCraft محفوظ است © ۲۰۲۶
-    </div>
+    تمامی حقوق برای KING MC محفوظ است © ۲۰۲۶
   </footer>
 
   <!-- پنجره ورود -->
   <div class="modal-backdrop" id="loginModal">
     <div class="modal">
+
       <div class="modal-head">
         <h2>ورود به حساب</h2>
         <button class="close" onclick="closeModal('loginModal')">×</button>
@@ -902,15 +1076,19 @@
 
       <input class="input" type="text" placeholder="نام کاربری یا ایمیل">
       <input class="input" type="password" placeholder="رمز عبور">
-      <button class="btn btn-primary" style="width:100%" onclick="fakeSubmit('ورود با موفقیت انجام شد')">
+
+      <button class="btn btn-primary" style="width:100%"
+        onclick="fakeSubmit('ورود با موفقیت انجام شد')">
         ورود
       </button>
+
     </div>
   </div>
 
   <!-- پنجره ثبت‌نام -->
   <div class="modal-backdrop" id="registerModal">
     <div class="modal">
+
       <div class="modal-head">
         <h2>ساخت حساب جدید</h2>
         <button class="close" onclick="closeModal('registerModal')">×</button>
@@ -919,29 +1097,41 @@
       <input class="input" type="text" placeholder="نام کاربری">
       <input class="input" type="email" placeholder="ایمیل">
       <input class="input" type="password" placeholder="رمز عبور">
-      <button class="btn btn-primary" style="width:100%" onclick="fakeSubmit('حساب شما ساخته شد')">
+
+      <button class="btn btn-primary" style="width:100%"
+        onclick="fakeSubmit('حساب شما ساخته شد')">
         ثبت‌نام
       </button>
+
     </div>
   </div>
 
-  <!-- پنجره تیکت -->
+  <!-- پنجره پشتیبانی -->
   <div class="modal-backdrop" id="ticketModal">
     <div class="modal">
+
       <div class="modal-head">
         <h2>تیکت پشتیبانی</h2>
         <button class="close" onclick="closeModal('ticketModal')">×</button>
       </div>
 
       <input class="input" type="text" placeholder="موضوع تیکت">
-      <textarea class="input" placeholder="مشکل خود را بنویسید..."></textarea>
-      <button class="btn btn-primary" style="width:100%" onclick="fakeSubmit('تیکت شما ارسال شد')">
+
+      <textarea class="input"
+        placeholder="مشکل خود را بنویسید..."></textarea>
+
+      <button class="btn btn-primary" style="width:100%"
+        onclick="fakeSubmit('تیکت شما ارسال شد')">
         ارسال تیکت
       </button>
+
     </div>
   </div>
 
-  <div class="toast" id="toast">پیام</div>
+  <!-- پیام کوچک سایت -->
+  <div class="toast" id="toast">
+    پیام
+  </div>
 
   <script>
     const toast = document.getElementById("toast");
@@ -956,19 +1146,23 @@
     }
 
     async function copyServer() {
-      const address = document.getElementById("serverAddress").textContent.trim();
+      const address = document
+        .getElementById("serverAddress")
+        .textContent
+        .trim();
 
       try {
         await navigator.clipboard.writeText(address);
-        showToast("آدرس سرور کپی شد ✅");
+        showToast("آدرس سرور KING MC کپی شد ✅");
       } catch {
-        const temp = document.createElement("textarea");
-        temp.value = address;
-        document.body.appendChild(temp);
-        temp.select();
+        const textarea = document.createElement("textarea");
+        textarea.value = address;
+        document.body.appendChild(textarea);
+        textarea.select();
         document.execCommand("copy");
-        temp.remove();
-        showToast("آدرس سرور کپی شد ✅");
+        textarea.remove();
+
+        showToast("آدرس سرور KING MC کپی شد ✅");
       }
     }
 
@@ -982,9 +1176,11 @@
 
     function fakeSubmit(message) {
       showToast(message);
-      document.querySelectorAll(".modal-backdrop").forEach(modal => {
-        modal.classList.remove("show");
-      });
+
+      document.querySelectorAll(".modal-backdrop")
+        .forEach(modal => {
+          modal.classList.remove("show");
+        });
     }
 
     function addToCart(product) {
@@ -992,22 +1188,28 @@
     }
 
     function downloadLauncher() {
-      showToast("لینک دانلود لانچر آماده نیست؛ لینک واقعی را جایگزین کنید.");
+      showToast("دانلود لانچر KING MC به‌زودی فعال می‌شود.");
     }
 
-    // فیلتر دسته‌بندی فروشگاه
+    /* فیلتر محصولات */
     const categoryButtons = document.querySelectorAll(".category");
     const products = document.querySelectorAll(".product");
 
     categoryButtons.forEach(button => {
       button.addEventListener("click", () => {
-        categoryButtons.forEach(btn => btn.classList.remove("active"));
+        categoryButtons.forEach(btn => {
+          btn.classList.remove("active");
+        });
+
         button.classList.add("active");
 
         const filter = button.dataset.filter;
 
         products.forEach(product => {
-          if (filter === "all" || product.dataset.category === filter) {
+          if (
+            filter === "all" ||
+            product.dataset.category === filter
+          ) {
             product.style.display = "block";
           } else {
             product.style.display = "none";
@@ -1016,21 +1218,23 @@
       });
     });
 
-    // بستن مودال با کلیک بیرون
-    document.querySelectorAll(".modal-backdrop").forEach(backdrop => {
-      backdrop.addEventListener("click", event => {
-        if (event.target === backdrop) {
-          backdrop.classList.remove("show");
-        }
+    /* بستن پنجره با کلیک بیرون */
+    document.querySelectorAll(".modal-backdrop")
+      .forEach(backdrop => {
+        backdrop.addEventListener("click", event => {
+          if (event.target === backdrop) {
+            backdrop.classList.remove("show");
+          }
+        });
       });
-    });
 
-    // بستن مودال با کلید Escape
+    /* بستن پنجره با دکمه Escape */
     document.addEventListener("keydown", event => {
       if (event.key === "Escape") {
-        document.querySelectorAll(".modal-backdrop").forEach(modal => {
-          modal.classList.remove("show");
-        });
+        document.querySelectorAll(".modal-backdrop")
+          .forEach(modal => {
+            modal.classList.remove("show");
+          });
       }
     });
   </script>
