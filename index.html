@@ -1,1243 +1,838 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KING MC | سرور ماینکرفت</title>
-
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800;900&display=swap');
-
-    :root {
-      --bg: #070812;
-      --card: rgba(21, 25, 48, .78);
-      --border: rgba(255, 255, 255, .1);
-      --primary: #8b5cf6;
-      --secondary: #22d3ee;
-      --pink: #ec4899;
-      --text: #f5f7ff;
-      --muted: #a6acc6;
-      --success: #34d399;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: "Vazirmatn", sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 10% 10%, rgba(139, 92, 246, .2), transparent 30%),
-        radial-gradient(circle at 90% 25%, rgba(34, 211, 238, .13), transparent 30%),
-        var(--bg);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: .2;
-      background-image:
-        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-      background-size: 45px 45px;
-      mask-image: linear-gradient(to bottom, black, transparent);
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button {
-      font-family: inherit;
-      border: none;
-      cursor: pointer;
-    }
-
-    .container {
-      width: min(1180px, 92%);
-      margin: auto;
-    }
-
-    /* Header */
-    header {
-      position: fixed;
-      z-index: 20;
-      top: 0;
-      width: 100%;
-      background: rgba(7, 8, 18, .75);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    nav {
-      height: 76px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 22px;
-      font-weight: 900;
-      white-space: nowrap;
-      letter-spacing: 1px;
-    }
-
-    .logo-icon {
-      width: 43px;
-      height: 43px;
-      display: grid;
-      place-items: center;
-      border-radius: 13px;
-      color: white;
-      font-size: 25px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      box-shadow: 0 0 25px rgba(139, 92, 246, .55);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .nav-links a {
-      transition: .25s;
-    }
-
-    .nav-links a:hover {
-      color: white;
-      transform: translateY(-2px);
-    }
-
-    .nav-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .btn {
-      padding: 12px 18px;
-      border-radius: 12px;
-      color: white;
-      background: rgba(255,255,255,.08);
-      border: 1px solid var(--border);
-      transition: .25s;
-      font-weight: 700;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px);
-      background: rgba(255,255,255,.15);
-      border-color: rgba(255,255,255,.28);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--pink));
-      box-shadow: 0 12px 35px rgba(139, 92, 246, .28);
-    }
-
-    .btn-primary:hover {
-      box-shadow: 0 15px 45px rgba(139, 92, 246, .5);
-    }
-
-    .btn-cyan {
-      background: linear-gradient(135deg, #0891b2, var(--secondary));
-      color: #00151b;
-    }
-
-    /* Hero */
-    .hero {
-      min-height: 790px;
-      padding-top: 150px;
-      display: flex;
-      align-items: center;
-      position: relative;
-    }
-
-    .hero-content {
-      width: 63%;
-      position: relative;
-      z-index: 2;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      color: #c4b5fd;
-      border: 1px solid rgba(167,139,250,.3);
-      background: rgba(139,92,246,.1);
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 13px;
-      margin-bottom: 22px;
-    }
-
-    .pulse {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--success);
-      box-shadow: 0 0 0 0 rgba(52,211,153,.7);
-      animation: pulse 1.7s infinite;
-    }
-
-    @keyframes pulse {
-      70% {
-        box-shadow: 0 0 0 10px transparent;
-      }
-      100% {
-        box-shadow: 0 0 0 0 transparent;
-      }
-    }
-
-    h1 {
-      font-size: clamp(40px, 6vw, 78px);
-      line-height: 1.1;
-      font-weight: 900;
-      letter-spacing: -2px;
-      margin-bottom: 24px;
-    }
-
-    .gradient-text {
-      background: linear-gradient(100deg, #c4b5fd, #22d3ee, #f0abfc);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .hero p {
-      max-width: 650px;
-      color: var(--muted);
-      font-size: 17px;
-      line-height: 2;
-      margin-bottom: 30px;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .server-box {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      width: fit-content;
-      margin-top: 28px;
-      padding: 9px 10px 9px 18px;
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      background: rgba(255,255,255,.055);
-    }
-
-    .server-address {
-      direction: ltr;
-      color: #dbeafe;
-      font-family: monospace;
-      font-size: 15px;
-    }
-
-    .copy-btn {
-      padding: 9px 14px;
-      border-radius: 9px;
-      color: white;
-      background: rgba(139,92,246,.3);
-    }
-
-    .hero-art {
-      position: absolute;
-      left: 0;
-      width: 400px;
-      height: 400px;
-      border-radius: 35% 65% 60% 40%;
-      background: linear-gradient(135deg, rgba(139,92,246,.75), rgba(34,211,238,.5));
-      opacity: .7;
-      transform: rotate(25deg);
-      animation: float 6s ease-in-out infinite;
-      box-shadow:
-        0 0 80px rgba(139,92,246,.35),
-        inset 0 0 60px rgba(255,255,255,.15);
-    }
-
-    .hero-art::after {
-      content: "♛";
-      position: absolute;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      font-size: 175px;
-      color: rgba(255,255,255,.35);
-      transform: rotate(-25deg);
-    }
-
-    @keyframes float {
-      0%, 100% {
-        transform: rotate(25deg) translateY(0);
-      }
-      50% {
-        transform: rotate(30deg) translateY(-25px);
-      }
-    }
-
-    /* Sections */
-    section {
-      padding: 95px 0;
-      position: relative;
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 42px;
-    }
-
-    .section-title h2 {
-      font-size: 34px;
-      margin-bottom: 10px;
-    }
-
-    .section-title p {
-      color: var(--muted);
-    }
-
-    /* Stats */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-      margin-top: -40px;
-      position: relative;
-      z-index: 3;
-    }
-
-    .stat-card,
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      backdrop-filter: blur(15px);
-    }
-
-    .stat-card {
-      padding: 24px;
-      text-align: center;
-    }
-
-    .stat-card strong {
-      display: block;
-      font-size: 28px;
-      color: #c4b5fd;
-    }
-
-    .stat-card span {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    /* Categories */
-    .categories {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 30px;
-    }
-
-    .category {
-      padding: 10px 17px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.06);
-      color: var(--muted);
-      border: 1px solid var(--border);
-      transition: .25s;
-    }
-
-    .category.active,
-    .category:hover {
-      color: white;
-      background: linear-gradient(135deg, var(--primary), var(--pink));
-    }
-
-    /* Products */
-    .products {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-
-    .product {
-      padding: 18px;
-      overflow: hidden;
-      transition: .3s;
-    }
-
-    .product:hover {
-      transform: translateY(-8px);
-      border-color: rgba(139,92,246,.7);
-      box-shadow: 0 15px 40px rgba(0,0,0,.25);
-    }
-
-    .product-image {
-      height: 145px;
-      display: grid;
-      place-items: center;
-      border-radius: 15px;
-      font-size: 65px;
-      margin-bottom: 17px;
-      background: linear-gradient(135deg, rgba(139,92,246,.25), rgba(34,211,238,.16));
-    }
-
-    .product h3 {
-      margin-bottom: 7px;
-    }
-
-    .product small {
-      color: var(--muted);
-      display: block;
-      min-height: 40px;
-      line-height: 1.7;
-    }
-
-    .product-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 17px;
-      gap: 10px;
-    }
-
-    .price {
-      color: #67e8f9;
-      font-weight: 800;
-      white-space: nowrap;
-      font-size: 13px;
-    }
-
-    .buy-btn {
-      padding: 9px 12px;
-      color: white;
-      border-radius: 9px;
-      background: rgba(139,92,246,.35);
-    }
-
-    /* Features */
-    .features {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .feature {
-      padding: 28px;
-      text-align: center;
-    }
-
-    .feature-icon {
-      font-size: 42px;
-      margin-bottom: 15px;
-    }
-
-    .feature p {
-      color: var(--muted);
-      line-height: 1.9;
-      margin-top: 8px;
-      font-size: 14px;
-    }
-
-    /* Download */
-    .download {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 25px;
-      padding: 36px;
-      background:
-        linear-gradient(110deg, rgba(139,92,246,.2), rgba(34,211,238,.08)),
-        var(--card);
-      border: 1px solid rgba(139,92,246,.35);
-      border-radius: 25px;
-    }
-
-    .download p {
-      color: var(--muted);
-      margin-top: 9px;
-    }
-
-    /* FAQ */
-    .faq {
-      max-width: 800px;
-      margin: auto;
-    }
-
-    details {
-      padding: 19px 22px;
-      margin-bottom: 12px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      color: var(--muted);
-    }
-
-    summary {
-      color: white;
-      cursor: pointer;
-      font-weight: 700;
-    }
-
-    details p {
-      padding-top: 15px;
-      line-height: 1.9;
-    }
-
-    /* Footer */
-    footer {
-      padding: 35px 0;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      text-align: center;
-      font-size: 13px;
-    }
-
-    /* Modal */
-    .modal-backdrop {
-      display: none;
-      position: fixed;
-      z-index: 50;
-      inset: 0;
-      place-items: center;
-      padding: 20px;
-      background: rgba(0,0,0,.7);
-      backdrop-filter: blur(8px);
-    }
-
-    .modal-backdrop.show {
-      display: grid;
-    }
-
-    .modal {
-      width: min(450px, 100%);
-      padding: 27px;
-      border-radius: 22px;
-      background: #11152b;
-      border: 1px solid var(--border);
-      box-shadow: 0 25px 100px rgba(0,0,0,.5);
-      animation: modalIn .3s ease;
-    }
-
-    @keyframes modalIn {
-      from {
-        opacity: 0;
-        transform: scale(.85) translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
-    }
-
-    .modal-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 22px;
-    }
-
-    .close {
-      color: white;
-      background: transparent;
-      font-size: 25px;
-    }
-
-    .input {
-      width: 100%;
-      padding: 13px 15px;
-      margin-bottom: 13px;
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      outline: none;
-      color: white;
-      background: rgba(255,255,255,.06);
-      font-family: inherit;
-    }
-
-    textarea.input {
-      resize: vertical;
-      min-height: 110px;
-    }
-
-    .toast {
-      position: fixed;
-      z-index: 100;
-      left: 25px;
-      bottom: 25px;
-      padding: 14px 20px;
-      border-radius: 12px;
-      color: white;
-      background: #171c35;
-      border: 1px solid rgba(52,211,153,.5);
-      transform: translateY(100px);
-      opacity: 0;
-      transition: .35s;
-    }
-
-    .toast.show {
-      transform: translateY(0);
-      opacity: 1;
-    }
-
-    /* Responsive */
-    @media (max-width: 900px) {
-      .hero-content {
-        width: 100%;
-      }
-
-      .hero-art {
-        opacity: .25;
-      }
-
-      .products {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .features {
-        grid-template-columns: 1fr;
-      }
-
-      .nav-links {
-        display: none;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .hero {
-        min-height: 700px;
-      }
-
-      .hero-art {
-        width: 280px;
-        height: 280px;
-      }
-
-      .products {
-        grid-template-columns: 1fr;
-      }
-
-      .download {
-        display: block;
-      }
-
-      .download .btn {
-        margin-top: 20px;
-      }
-
-      .server-box {
-        width: 100%;
-        justify-content: space-between;
-      }
-
-      .server-address {
-        font-size: 12px;
-      }
-
-      .nav-actions .btn {
-        padding: 9px 11px;
-        font-size: 12px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Mini CoD - Full Edition</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; user-select:none; }
+  html,body { width:100%; height:100%; overflow:hidden; background:#111; font-family:-apple-system,sans-serif; touch-action:none; }
+  canvas { display:block; }
+  #hud { position:absolute; inset:0; pointer-events:none; color:#fff; }
+  #hud .top { position:absolute; top:10px; left:0; right:0; display:flex; justify-content:space-between; padding:0 14px; font-size:14px; font-weight:bold; text-shadow:0 0 4px #000; }
+  #crosshair { position:absolute; top:50%; left:50%; width:24px; height:24px; margin:-12px 0 0 -12px; }
+  #crosshair::before, #crosshair::after { content:''; position:absolute; background:rgba(0,255,120,0.9); box-shadow:0 0 3px #000; }
+  #crosshair::before { left:11px; top:0; width:2px; height:24px; }
+  #crosshair::after  { top:11px; left:0; height:2px; width:24px; }
+  #hitmarker { position:absolute; top:50%; left:50%; width:32px; height:32px; margin:-16px 0 0 -16px; opacity:0; transition:opacity .15s; }
+  #hitmarker::before, #hitmarker::after { content:''; position:absolute; background:#f44; width:3px; height:32px; left:14.5px; box-shadow:0 0 4px #000; }
+  #hitmarker::before { transform:rotate(45deg); }
+  #hitmarker::after  { transform:rotate(-45deg); }
+  #hitmarker.head::before, #hitmarker.head::after { background:#ffdd00; }
+
+  #healthBar { position:absolute; bottom:20px; left:20px; width:180px; height:14px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.3); border-radius:3px; overflow:hidden; }
+  #healthFill { height:100%; width:100%; background:linear-gradient(90deg,#e33,#f55); transition:width .2s; }
+  #healthText { position:absolute; bottom:38px; left:22px; font-size:12px; font-weight:bold; text-shadow:0 0 4px #000; }
+
+  #ammo { position:absolute; bottom:20px; right:20px; font-size:20px; font-weight:bold; text-shadow:0 0 6px #000; color:#ffd; text-align:right; }
+  #ammo small { font-size:12px; opacity:0.7; display:block; }
+  #grenadeCount { position:absolute; bottom:20px; right:170px; font-size:16px; font-weight:bold; text-shadow:0 0 6px #000; color:#8f8; }
+
+  #wave { position:absolute; top:35%; left:50%; transform:translate(-50%,-50%); font-size:44px; font-weight:bold; color:#fff; opacity:0; text-shadow:0 0 20px #f00; pointer-events:none; transition:opacity .4s; text-align:center; }
+  #damageFlash { position:absolute; inset:0; background:radial-gradient(circle, transparent 40%, rgba(255,0,0,0.7)); opacity:0; transition:opacity .15s; pointer-events:none; }
+  #combo { position:absolute; top:30%; left:50%; transform:translateX(-50%); font-size:28px; font-weight:bold; color:#ffaa00; text-shadow:0 0 15px #f80; opacity:0; transition:opacity .3s; }
+  #throwArc { position:absolute; inset:0; pointer-events:none; }
+
+  #overlay { position:absolute; inset:0; background:rgba(0,0,0,0.88); color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; z-index:100; overflow-y:auto; }
+  #overlay h1 { font-size:28px; margin-bottom:10px; letter-spacing:2px; color:#f55; text-shadow:0 0 15px #f00; }
+  #overlay p { font-size:13px; line-height:1.9; opacity:0.85; max-width:360px; }
+  #overlay button { margin-top:18px; padding:12px 36px; font-size:17px; font-weight:bold; color:#fff; background:#c33; border:none; border-radius:8px; letter-spacing:1px; box-shadow:0 0 15px rgba(255,0,0,0.5); cursor:pointer; }
+  #overlay button:active { transform:scale(0.96); }
+  #overlay .small { font-size:11px; opacity:0.6; margin-top:10px; }
+  #board { margin-top:16px; width:280px; text-align:right; }
+  #board h3 { font-size:14px; color:#ffdd00; margin-bottom:8px; text-align:center; }
+  #board .row { display:flex; justify-content:space-between; font-size:13px; padding:4px 8px; border-bottom:1px solid rgba(255,255,255,0.1); }
+  #board .row.me { background:rgba(255,200,0,0.15); color:#ffdd00; font-weight:bold; }
+
+  #btnFire { position:absolute; bottom:30px; right:30px; width:90px; height:90px; border-radius:50%; background:rgba(220,40,40,0.55); border:3px solid rgba(255,255,255,0.7); color:#fff; font-weight:bold; font-size:13px; display:flex; align-items:center; justify-content:center; touch-action:none; }
+  #btnReload { position:absolute; bottom:135px; right:35px; width:70px; height:70px; border-radius:50%; background:rgba(40,120,220,0.55); border:3px solid rgba(255,255,255,0.7); color:#fff; font-weight:bold; font-size:11px; display:flex; align-items:center; justify-content:center; touch-action:none; }
+  #btnGrenade { position:absolute; bottom:135px; right:120px; width:70px; height:70px; border-radius:50%; background:rgba(80,200,80,0.55); border:3px solid rgba(255,255,255,0.7); color:#fff; font-weight:bold; font-size:11px; display:flex; align-items:center; justify-content:center; touch-action:none; }
+  #btnJump { position:absolute; bottom:30px; right:135px; width:70px; height:70px; border-radius:50%; background:rgba(200,180,40,0.5); border:3px solid rgba(255,255,255,0.6); color:#fff; font-weight:bold; font-size:11px; display:flex; align-items:center; justify-content:center; touch-action:none; }
+  #joystick { position:absolute; bottom:30px; left:30px; width:120px; height:120px; border-radius:50%; background:rgba(255,255,255,0.15); border:2px solid rgba(255,255,255,0.3); touch-action:none; }
+  #joyKnob { position:absolute; top:50%; left:50%; width:52px; height:52px; margin:-26px 0 0 -26px; border-radius:50%; background:rgba(255,255,255,0.5); border:2px solid rgba(255,255,255,0.85); }
+  #btnGrenade.dim { opacity:0.35; }
+
+  @media (pointer: fine) {
+    #joystick, #btnFire, #btnReload, #btnJump, #btnGrenade { display:none; }
+    #grenadeCount { right:22px; bottom:60px; }
+  }
+</style>
 </head>
-
 <body>
-
-  <!-- نوار بالای سایت -->
-  <header>
-    <div class="container">
-      <nav>
-        <a href="#home" class="logo">
-          <span class="logo-icon">♛</span>
-          KING MC
-        </a>
-
-        <div class="nav-links">
-          <a href="#shop">فروشگاه</a>
-          <a href="#features">امکانات</a>
-          <a href="#download">دانلود لانچر</a>
-          <a href="#rules">قوانین</a>
-          <a href="#support">پشتیبانی</a>
-        </div>
-
-        <div class="nav-actions">
-          <button class="btn" onclick="openModal('loginModal')">
-            ورود
-          </button>
-
-          <button class="btn btn-primary" onclick="openModal('registerModal')">
-            ثبت‌نام
-          </button>
-        </div>
-      </nav>
-    </div>
-  </header>
-
-  <!-- صفحه اصلی -->
-  <main id="home">
-
-    <section class="hero">
-      <div class="container">
-        <div class="hero-content">
-
-          <div class="badge">
-            <span class="pulse"></span>
-            سرور KING MC آنلاین است
-          </div>
-
-          <h1>
-            به قلمرو<br>
-            <span class="gradient-text">KING MC</span> خوش آمدی
-          </h1>
-
-          <p>
-            به یکی از جذاب‌ترین سرورهای ماینکرفت بپیوند.
-            در بخش‌های SMP، SkyMine و Practice با دوستانت بازی کن،
-            آیتم‌های ویژه بگیر و پادشاه سرور شو.
-          </p>
-
-          <div class="hero-buttons">
-            <a href="#shop" class="btn btn-primary">
-              مشاهده فروشگاه
-            </a>
-
-            <button class="btn btn-cyan" onclick="copyServer()">
-              کپی آدرس سرور
-            </button>
-          </div>
-
-          <div class="server-box">
-            <span class="server-address" id="serverAddress">
-              play.kingmc.ir:25565
-            </span>
-
-            <button class="copy-btn" onclick="copyServer()">
-              کپی
-            </button>
-          </div>
-
-        </div>
-
-        <div class="hero-art"></div>
-      </div>
-    </section>
-
-    <!-- آمار سرور -->
-    <div class="container">
-      <div class="stats">
-
-        <div class="stat-card">
-          <strong>۲۴/۷</strong>
-          <span>فعالیت سرور</span>
-        </div>
-
-        <div class="stat-card">
-          <strong>+۱۲K</strong>
-          <span>بازیکن ثبت‌نام‌شده</span>
-        </div>
-
-        <div class="stat-card">
-          <strong>+۳۵۰</strong>
-          <span>آیتم فروشگاه</span>
-        </div>
-
-        <div class="stat-card">
-          <strong>۱۲۴</strong>
-          <span>بازیکن آنلاین</span>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- فروشگاه -->
-    <section id="shop">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>فروشگاه KING MC</h2>
-          <p>آیتم‌ها و امکانات ویژه خودت را همین حالا تهیه کن</p>
-        </div>
-
-        <div class="categories">
-          <button class="category active" data-filter="all">
-            همه
-          </button>
-
-          <button class="category" data-filter="smp">
-            آیتم‌های SMP
-          </button>
-
-          <button class="category" data-filter="sky">
-            آیتم‌های SkyMine
-          </button>
-
-          <button class="category" data-filter="practice">
-            Practice
-          </button>
-
-          <button class="category" data-filter="rank">
-            رنک‌ها
-          </button>
-
-          <button class="category" data-filter="key">
-            کلیدها
-          </button>
-
-          <button class="category" data-filter="coin">
-            کوین
-          </button>
-        </div>
-
-        <div class="products">
-
-          <div class="product card" data-category="rank">
-            <div class="product-image">👑</div>
-            <h3>رنک Legend</h3>
-            <small>
-              دسترسی به امکانات ویژه و تگ اختصاصی
-            </small>
-
-            <div class="product-bottom">
-              <span class="price">۲۵۰,۰۰۰ تومان</span>
-              <button class="buy-btn" onclick="addToCart('رنک Legend')">
-                خرید
-              </button>
-            </div>
-          </div>
-
-          <div class="product card" data-category="smp">
-            <div class="product-image">⚔️</div>
-            <h3>شمشیر افسانه‌ای</h3>
-            <small>
-              شمشیر قدرتمند مخصوص بخش SMP
-            </small>
-
-            <div class="product-bottom">
-              <span class="price">۸۵,۰۰۰ تومان</span>
-              <button class="buy-btn" onclick="addToCart('شمشیر افسانه‌ای')">
-                خرید
-              </button>
-            </div>
-          </div>
-
-          <div class="product card" data-category="sky">
-            <div class="product-image">☁️</div>
-            <h3>جزیره ویژه SkyMine</h3>
-            <small>
-              جزیره اختصاصی با امکانات بیشتر
-            </small>
-
-            <div class="product-bottom">
-              <span class="price">۱۲۰,۰۰۰ تومان</span>
-              <button class="buy-btn" onclick="addToCart('جزیره ویژه SkyMine')">
-                خرید
-              </button>
-            </div>
-          </div>
-
-          <div class="product card" data-category="practice">
-            <div class="product-image">🏹</div>
-            <h3>Practice Kit</h3>
-            <small>
-              کیت حرفه‌ای برای تمرین PvP
-            </small>
-
-            <div class="product-bottom">
-              <span class="price">۵۰,۰۰۰ تومان</span>
-              <button class="buy-btn" onclick="addToCart('Practice Kit')">
-                خرید
-              </button>
-            </div>
-          </div>
-
-          <div class="product card" data-category="key">
-            <div class="product-image">🔑</div>
-            <h3>کلید Legendary</h3>
-            <small>
-              شانس دریافت آیتم‌های بسیار کمیاب
-            </small>
-
-            <div class="product-bottom">
-              <span class="price">۳۰,۰۰۰ تومان</span>
-              <button class="buy-btn" onclick="addToCart('کلید Legendary')">
-                خرید
-              </button>
-            </div>
-          </div>
-
-          <div class="product card" data-category="coin">
-            <div class="product-image">🪙</div>
-            <h3>۵۰۰۰ کوین</h3>
-            <small>
-              مناسب خرید آیتم از فروشگاه داخل بازی
-            </small>
-
-            <div class="product-bottom">
-              <span class="price">۴۰,۰۰۰ تومان</span>
-              <button class="buy-btn" onclick="addToCart('۵۰۰۰ کوین')">
-                خرید
-              </button>
-            </div>
-          </div>
-
-          <div class="product card" data-category="smp">
-            <div class="product-image">🛡️</div>
-            <h3>زره ندرایت</h3>
-            <small>
-              زره کامل برای شروع ماجراجویی
-            </small>
-
-            <div class="product-bottom">
-              <span class="price">۹۰,۰۰۰ تومان</span>
-              <button class="buy-btn" onclick="addToCart('زره ندرایت')">
-                خرید
-              </button>
-            </div>
-          </div>
-
-          <div class="product card" data-category="rank">
-            <div class="product-image">💎</div>
-            <h3>رنک Diamond</h3>
-            <small>
-              رنک محبوب با امکانات جذاب
-            </small>
-
-            <div class="product-bottom">
-              <span class="price">۱۵۰,۰۰۰ تومان</span>
-              <button class="buy-btn" onclick="addToCart('رنک Diamond')">
-                خرید
-              </button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- امکانات -->
-    <section id="features">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>چرا KING MC؟</h2>
-          <p>همه‌چیز برای یک تجربه حرفه‌ای آماده شده است</p>
-        </div>
-
-        <div class="features">
-
-          <div class="feature card">
-            <div class="feature-icon">⚡</div>
-            <h3>سرعت بالا</h3>
-            <p>
-              سرور قدرتمند با پینگ مناسب و بدون لگ برای تجربه‌ای روان.
-            </p>
-          </div>
-
-          <div class="feature card">
-            <div class="feature-icon">🛡️</div>
-            <h3>امنیت بالا</h3>
-            <p>
-              محافظت از حساب، آیتم‌ها و اطلاعات بازیکنان در تمام ساعات.
-            </p>
-          </div>
-
-          <div class="feature card">
-            <div class="feature-icon">🎮</div>
-            <h3>گیم‌مودهای متنوع</h3>
-            <p>
-              SMP، SkyMine، Practice و بخش‌های جذاب دیگر در انتظار تو هستند.
-            </p>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- دانلود لانچر -->
-    <section id="download">
-      <div class="container">
-
-        <div class="download">
-          <div>
-            <h2>لانچر KING MC را دانلود کن</h2>
-            <p>
-              با لانچر اختصاصی، سریع‌تر و راحت‌تر وارد سرور شو.
-            </p>
-          </div>
-
-          <button class="btn btn-primary" onclick="downloadLauncher()">
-            دانلود لانچر
-          </button>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- قوانین -->
-    <section id="rules">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>قوانین و آموزش</h2>
-          <p>قبل از ورود، قوانین سرور را مطالعه کن</p>
-        </div>
-
-        <div class="faq">
-
-          <details>
-            <summary>چگونه وارد سرور شوم؟</summary>
-            <p>
-              ابتدا ماینکرفت را باز کن، بخش Multiplayer را انتخاب کن،
-              سپس آدرس play.kingmc.ir را وارد کن.
-            </p>
-          </details>
-
-          <details>
-            <summary>آیا استفاده از چیت مجاز است؟</summary>
-            <p>
-              خیر. استفاده از هرگونه Cheat، Hack، X-Ray و ابزار غیرمجاز
-              باعث محرومیت حساب کاربری خواهد شد.
-            </p>
-          </details>
-
-          <details>
-            <summary>محصولات فروشگاه چه زمانی تحویل داده می‌شوند؟</summary>
-            <p>
-              پس از پرداخت موفق، محصولات به‌صورت خودکار یا حداکثر طی چند دقیقه
-              داخل سرور برای شما فعال خواهند شد.
-            </p>
-          </details>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- پشتیبانی -->
-    <section id="support">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>پشتیبانی KING MC</h2>
-          <p>اگر مشکلی داری، برای ما تیکت ارسال کن</p>
-        </div>
-
-        <div style="text-align:center">
-          <button class="btn btn-primary" onclick="openModal('ticketModal')">
-            ایجاد تیکت پشتیبانی
-          </button>
-        </div>
-
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Footer -->
-  <footer>
-    تمامی حقوق برای KING MC محفوظ است © ۲۰۲۶
-  </footer>
-
-  <!-- پنجره ورود -->
-  <div class="modal-backdrop" id="loginModal">
-    <div class="modal">
-
-      <div class="modal-head">
-        <h2>ورود به حساب</h2>
-        <button class="close" onclick="closeModal('loginModal')">×</button>
-      </div>
-
-      <input class="input" type="text" placeholder="نام کاربری یا ایمیل">
-      <input class="input" type="password" placeholder="رمز عبور">
-
-      <button class="btn btn-primary" style="width:100%"
-        onclick="fakeSubmit('ورود با موفقیت انجام شد')">
-        ورود
-      </button>
-
-    </div>
+<div id="hud">
+  <div class="top">
+    <div>💀 <span id="score">0</span></div>
+    <div>🌊 موج <span id="waveNum">1</span></div>
+    <div>🎯 <span id="enemyCount">0</span></div>
   </div>
+  <div id="crosshair"></div>
+  <div id="hitmarker"></div>
+  <div id="damageFlash"></div>
+  <div id="combo"></div>
+  <div id="healthText">❤️ <span id="hp">100</span></div>
+  <div id="healthBar"><div id="healthFill"></div></div>
+  <div id="ammo"><span id="mag">30</span> / <span id="reserve">120</span><small>🔫</small></div>
+  <div id="grenadeCount">💣 <span id="nades">3</span></div>
+  <div id="wave"></div>
+</div>
 
-  <!-- پنجره ثبت‌نام -->
-  <div class="modal-backdrop" id="registerModal">
-    <div class="modal">
+<div id="joystick"><div id="joyKnob"></div></div>
+<div id="btnFire">شلیک</div>
+<div id="btnReload">ریلود</div>
+<div id="btnGrenade">💣 نارنجک</div>
+<div id="btnJump">پرش</div>
 
-      <div class="modal-head">
-        <h2>ساخت حساب جدید</h2>
-        <button class="close" onclick="closeModal('registerModal')">×</button>
-      </div>
+<div id="overlay">
+  <h1>MINI CALL OF DUTY</h1>
+  <p>
+    موج‌ها میان، بکش و زنده بمون.<br>
+    <b>🎯 هدشات</b> = ۲x آسیب و امتیاز بیشتر<br>
+    <b>💣 نارنجک</b> = انفجار شعاعی (کلید G)<br>
+    <b>⚡ Combo</b> = کشتن پشت سر هم، امتیاز ضربدری<br><br>
+    <b>موبایل:</b> جوی‌استیک + کشیدن انگشت<br>
+    <b>دسکتاپ:</b> WASD + موس + کلیک + R + Space + G
+  </p>
+  <button id="startBtn">شروع بازی</button>
+  <div id="board"></div>
+  <div class="small">هر ۵ موج دشمن‌ها قوی‌تر می‌شن</div>
+</div>
 
-      <input class="input" type="text" placeholder="نام کاربری">
-      <input class="input" type="email" placeholder="ایمیل">
-      <input class="input" type="password" placeholder="رمز عبور">
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+</script>
 
-      <button class="btn btn-primary" style="width:100%"
-        onclick="fakeSubmit('حساب شما ساخته شد')">
-        ثبت‌نام
-      </button>
+<script type="module">
+import * as THREE from 'three';
 
-    </div>
-  </div>
+/* ================== پایه ================== */
+const ARENA = 42;
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x1a1a22);
+scene.fog = new THREE.Fog(0x1a1a22, 20, 65);
 
-  <!-- پنجره پشتیبانی -->
-  <div class="modal-backdrop" id="ticketModal">
-    <div class="modal">
+const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 200);
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+document.body.appendChild(renderer.domElement);
 
-      <div class="modal-head">
-        <h2>تیکت پشتیبانی</h2>
-        <button class="close" onclick="closeModal('ticketModal')">×</button>
-      </div>
+scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+const dir = new THREE.DirectionalLight(0xffffff, 0.9);
+dir.position.set(20, 40, 15);
+scene.add(dir);
 
-      <input class="input" type="text" placeholder="موضوع تیکت">
+/* ================== زمین و موانع ================== */
+const ground = new THREE.Mesh(
+  new THREE.PlaneGeometry(ARENA*2, ARENA*2),
+  new THREE.MeshLambertMaterial({ color: 0x2a3a2a })
+);
+ground.rotation.x = -Math.PI/2;
+scene.add(ground);
 
-      <textarea class="input"
-        placeholder="مشکل خود را بنویسید..."></textarea>
+const grid = new THREE.GridHelper(ARENA*2, ARENA, 0x444455, 0x222233);
+grid.position.y = 0.01;
+scene.add(grid);
 
-      <button class="btn btn-primary" style="width:100%"
-        onclick="fakeSubmit('تیکت شما ارسال شد')">
-        ارسال تیکت
-      </button>
+const wallMat = new THREE.MeshLambertMaterial({ color: 0x3a3a4a });
+function makeWall(x, z, w, d) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, 3, d), wallMat);
+  m.position.set(x, 1.5, z);
+  scene.add(m);
+}
+makeWall(0,  ARENA, ARENA*2, 1);
+makeWall(0, -ARENA, ARENA*2, 1);
+makeWall( ARENA, 0, 1, ARENA*2);
+makeWall(-ARENA, 0, 1, ARENA*2);
 
-    </div>
-  </div>
+const obstacles = [];
+for (let i = 0; i < 16; i++) {
+  const w = 2 + Math.random()*3, h = 1 + Math.random()*2, d = 2 + Math.random()*3;
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), new THREE.MeshLambertMaterial({ color: 0x4a3a2a }));
+  const x = (Math.random()-0.5) * (ARENA*2 - 10);
+  const z = (Math.random()-0.5) * (ARENA*2 - 10);
+  if (Math.hypot(x,z) < 6) { i--; continue; }
+  m.position.set(x, h/2, z);
+  m.userData = { w, h, d, x, z };
+  scene.add(m);
+  obstacles.push(m);
+}
 
-  <!-- پیام کوچک سایت -->
-  <div class="toast" id="toast">
-    پیام
-  </div>
+/* ================== صدا ================== */
+let audioCtx;
+function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }
+function playSound(freq, dur, type='square', vol=0.15, slideTo=null) {
+  if (!audioCtx) return;
+  const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+  o.type = type; o.frequency.value = freq;
+  if (slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, audioCtx.currentTime + dur);
+  g.gain.setValueAtTime(vol, audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+  o.connect(g); g.connect(audioCtx.destination);
+  o.start(); o.stop(audioCtx.currentTime + dur);
+}
+const sfx = {
+  shoot: () => { playSound(180,0.08,'square',0.09); playSound(80,0.12,'sawtooth',0.07); },
+  hit:   () => playSound(800,0.05,'square',0.1),
+  head:  () => { playSound(1200,0.06,'square',0.12); playSound(1600,0.08,'square',0.1); },
+  kill:  () => { playSound(400,0.1,'sawtooth',0.12); playSound(200,0.2,'sawtooth',0.1); },
+  reload:() => { playSound(300,0.06,'square',0.08); setTimeout(()=>playSound(500,0.06,'square',0.08),200); },
+  hurt:  () => playSound(120,0.2,'sawtooth',0.15),
+  wave:  () => { playSound(500,0.15,'square',0.12); setTimeout(()=>playSound(700,0.2,'square',0.12),200); },
+  nadeThrow: () => playSound(500,0.1,'sine',0.12,200),
+  explode: () => { playSound(80,0.4,'sawtooth',0.3,30); playSound(200,0.3,'square',0.2,40); },
+  combo: () => playSound(1400,0.1,'sine',0.12,1800),
+};
 
-  <script>
-    const toast = document.getElementById("toast");
+/* ================== بازیکن ================== */
+const player = {
+  pos: new THREE.Vector3(0, 1.7, 0),
+  vel: new THREE.Vector3(),
+  hp: 100, score: 0, onGround: true,
+};
+let yaw = 0, pitch = 0;
 
-    function showToast(message) {
-      toast.textContent = message;
-      toast.classList.add("show");
+/* ================== اسلحه ================== */
+const weapon = { mag:30, magSize:30, reserve:120, maxReserve:240, reloading:false, fireRate:100, lastShot:0 };
+const grenade = { count:3, maxCount:5, throwing:false };
 
-      setTimeout(() => {
-        toast.classList.remove("show");
-      }, 2800);
+const gunGroup = new THREE.Group();
+const gm = new THREE.MeshLambertMaterial({ color: 0x1a1a1a });
+const gunBody = new THREE.Mesh(new THREE.BoxGeometry(0.12,0.12,0.6), gm);
+gunBody.position.set(0,0,-0.3); gunGroup.add(gunBody);
+const gunBarrel = new THREE.Mesh(new THREE.BoxGeometry(0.06,0.06,0.5), new THREE.MeshLambertMaterial({ color:0x333 }));
+gunBarrel.position.set(0,0.02,-0.7); gunGroup.add(gunBarrel);
+const gunGrip = new THREE.Mesh(new THREE.BoxGeometry(0.1,0.18,0.12), new THREE.MeshLambertMaterial({ color:0x111 }));
+gunGrip.position.set(0,-0.14,-0.15); gunGroup.add(gunGrip);
+gunGroup.position.set(0.25,-0.2,-0.4);
+camera.add(gunGroup);
+scene.add(camera);
+let gunKick = 0;
+
+/* ================== دشمنان ================== */
+const enemies = [];
+const enemyGeo = new THREE.BoxGeometry(0.8, 1.6, 0.8);
+const enemyMats = {
+  normal: new THREE.MeshLambertMaterial({ color: 0xcc3333 }),
+  fast:   new THREE.MeshLambertMaterial({ color: 0xff8800 }),
+  tank:   new THREE.MeshLambertMaterial({ color: 0x8800cc }),
+  flank:  new THREE.MeshLambertMaterial({ color: 0x33cccc }),
+};
+
+function spawnEnemy(wave) {
+  const roll = Math.random();
+  let type='normal', speed=1.2+wave*0.08, hp=1, size=1;
+  if (wave >= 2 && roll < 0.25) { type='fast'; speed*=1.75; }
+  else if (wave >= 4 && roll > 0.88) { type='tank'; speed*=0.6; hp=3; size=1.35; }
+  else if (wave >= 3 && roll > 0.6 && roll < 0.75) { type='flank'; speed*=1.1; }
+
+  const mesh = new THREE.Mesh(enemyGeo, enemyMats[type]);
+  mesh.scale.setScalar(size);
+  const angle = Math.random() * Math.PI * 2;
+  const dist = 22 + Math.random() * 8;
+  mesh.position.set(Math.cos(angle)*dist, 0.8*size, Math.sin(angle)*dist);
+  scene.add(mesh);
+
+  // AI: زاویهٔ چرخش دور بازیکن (flank)
+  const orbitDir = Math.random() < 0.5 ? 1 : -1;
+  const preferDist = type === 'flank' ? 5 : (type === 'tank' ? 1 : 1.2);
+  enemies.push({
+    mesh, speed, hp, maxHp:hp, type, size,
+    orbitDir, preferDist,
+    orbitPhase: Math.random() * Math.PI * 2,
+    lastDamage: 0,
+  });
+}
+
+/* ================== نارنجک ================== */
+const grenades = []; // { mesh, vel, fuse, exploded }
+const grenadeGeo = new THREE.SphereGeometry(0.15, 8, 8);
+const grenadeMat = new THREE.MeshLambertMaterial({ color: 0x334422 });
+
+function throwGrenade() {
+  if (grenade.count <= 0 || grenade.throwing) return;
+  grenade.count--;
+  grenade.throwing = true;
+  updateGrenadeUI();
+  sfx.nadeThrow();
+
+  const mesh = new THREE.Mesh(grenadeGeo, grenadeMat);
+  // موقعیت از دوربین
+  const startPos = new THREE.Vector3();
+  camera.getWorldPosition(startPos);
+  startPos.y -= 0.1;
+  mesh.position.copy(startPos);
+  scene.add(mesh);
+
+  // جهت پرتاب
+  const dirVec = new THREE.Vector3();
+  camera.getWorldDirection(dirVec);
+  const vel = dirVec.clone().multiplyScalar(18);
+  vel.y += 4;
+
+  grenades.push({ mesh, vel, fuse: 2.5, exploded: false });
+
+  // انیمیشن پرتاب (اسلحه پایین میاد)
+  gunKick = 1.5;
+  setTimeout(() => grenade.throwing = false, 500);
+}
+
+function explodeGrenade(g) {
+  const pos = g.mesh.position.clone();
+  scene.remove(g.mesh);
+
+  // فلاش نور
+  const flash = new THREE.PointLight(0xffaa33, 20, 15);
+  flash.position.copy(pos);
+  scene.add(flash);
+  const flashMesh = new THREE.Mesh(new THREE.SphereGeometry(2, 12, 12), new THREE.MeshBasicMaterial({ color:0xffaa33, transparent:true, opacity:0.6 }));
+  flashMesh.position.copy(pos);
+  scene.add(flashMesh);
+  setTimeout(() => { scene.remove(flash); scene.remove(flashMesh); }, 200);
+
+  // ذرات انفجار
+  for (let i = 0; i < 20; i++) {
+    const p = new THREE.Mesh(new THREE.BoxGeometry(0.15,0.15,0.15), new THREE.MeshBasicMaterial({ color: i%2 ? 0xffaa33 : 0xff5522 }));
+    p.position.copy(pos);
+    p.userData = {
+      vel: new THREE.Vector3((Math.random()-0.5)*12, Math.random()*8+2, (Math.random()-0.5)*12),
+      life: 0.7 + Math.random()*0.4,
+      gravity: 12,
+    };
+    scene.add(p);
+    particles.push(p);
+  }
+
+  sfx.explode();
+
+  // آسیب شعاعی به دشمنان
+  const R = 5;
+  for (let i = enemies.length - 1; i >= 0; i--) {
+    const e = enemies[i];
+    const d = e.mesh.position.distanceTo(pos);
+    if (d < R) {
+      const dmg = Math.max(1, Math.round((1 - d/R) * 5));
+      e.hp -= dmg;
+      // پرش به عقب
+      const push = new THREE.Vector3().subVectors(e.mesh.position, pos).normalize().multiplyScalar(2);
+      e.mesh.position.add(push);
+      if (e.hp <= 0) killEnemy(i, true);
     }
+  }
 
-    async function copyServer() {
-      const address = document
-        .getElementById("serverAddress")
-        .textContent
-        .trim();
+  // آسیب به بازیکن اگه نزدیکه
+  const distP = player.pos.distanceTo(pos);
+  if (distP < R) damagePlayer(Math.round((1 - distP/R) * 40));
 
-      try {
-        await navigator.clipboard.writeText(address);
-        showToast("آدرس سرور KING MC کپی شد ✅");
-      } catch {
-        const textarea = document.createElement("textarea");
-        textarea.value = address;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        textarea.remove();
+  // پاکسازی
+  grenades.splice(grenades.indexOf(g), 1);
+}
 
-        showToast("آدرس سرور KING MC کپی شد ✅");
+/* ================== ذرات ================== */
+const particles = [];
+function spawnBlood(pos, color=0xaa2222) {
+  for (let i = 0; i < 5; i++) {
+    const p = new THREE.Mesh(new THREE.BoxGeometry(0.1,0.1,0.1), new THREE.MeshBasicMaterial({ color }));
+    p.position.copy(pos);
+    p.userData = {
+      vel: new THREE.Vector3((Math.random()-0.5)*5, Math.random()*3+1, (Math.random()-0.5)*5),
+      life: 0.5, gravity: 15,
+    };
+    scene.add(p);
+    particles.push(p);
+  }
+}
+
+/* ================== کمبو ================== */
+let comboCount = 0, comboTime = 0;
+const COMBO_WINDOW = 2.0;
+function addCombo() {
+  comboCount++;
+  comboTime = COMBO_WINDOW;
+  if (comboCount >= 2) {
+    const el = document.getElementById('combo');
+    el.textContent = `x${comboCount} COMBO!`;
+    el.style.opacity = '1';
+    sfx.combo();
+    setTimeout(() => el.style.opacity = '0', 700);
+  }
+}
+function resetCombo() {
+  comboCount = 0;
+}
+
+/* ================== تیراندازی ================== */
+const raycaster = new THREE.Raycaster();
+const screenCenter = new THREE.Vector2(0, 0);
+
+function tryShoot() {
+  const now = performance.now();
+  if (weapon.reloading || grenade.throwing) return;
+  if (now - weapon.lastShot < weapon.fireRate) return;
+  if (weapon.mag <= 0) { doReload(); return; }
+  weapon.lastShot = now;
+  weapon.mag--;
+  updateAmmoUI();
+  gunKick = 1;
+  sfx.shoot();
+
+  raycaster.setFromCamera(screenCenter, camera);
+  const enemyMeshes = enemies.map(e => e.mesh);
+  const enemyHits = raycaster.intersectObjects(enemyMeshes, false);
+  const obstacleHits = raycaster.intersectObjects(obstacles, false);
+
+  const eh = enemyHits[0], oh = obstacleHits[0];
+  if (eh && (!oh || eh.distance < oh.distance)) {
+    const idx = enemyMeshes.indexOf(eh.object);
+    if (idx >= 0) {
+      // تشخیص هدشات: نقطهٔ برخورد بالاتر از مرکز دشمن + 0.4
+      const e = enemies[idx];
+      const hitY = eh.point.y;
+      const headThreshold = e.mesh.position.y + 0.35 * e.size;
+      const isHead = hitY > headThreshold;
+      damageEnemy(idx, isHead);
+    }
+  } else if (oh) {
+    // جرقه روی مانع
+    spawnBlood(oh.point, 0xaaaaaa);
+  }
+}
+
+function damageEnemy(idx, isHead) {
+  const e = enemies[idx];
+  const dmg = isHead ? 2 : 1;
+  e.hp -= dmg;
+  spawnBlood(e.mesh.position.clone().setY(e.mesh.position.y + (isHead ? 0.6*e.size : 0)), isHead ? 0xffdd00 : 0xaa2222);
+  if (isHead) sfx.head(); else sfx.hit();
+  showHitmarker(isHead);
+
+  if (e.hp <= 0) killEnemy(idx, false, isHead);
+}
+
+function killEnemy(idx, byGrenade, wasHead=false) {
+  const e = enemies[idx];
+  // ذرات انفجار
+  for (let i = 0; i < 8; i++) {
+    const p = new THREE.Mesh(new THREE.BoxGeometry(0.15,0.15,0.15), new THREE.MeshBasicMaterial({ color: 0xff3333 }));
+    p.position.copy(e.mesh.position);
+    p.userData = {
+      vel: new THREE.Vector3((Math.random()-0.5)*4, Math.random()*3+2, (Math.random()-0.5)*4),
+      life: 0.8, gravity: 15,
+    };
+    scene.add(p);
+    particles.push(p);
+  }
+  scene.remove(e.mesh);
+  enemies.splice(idx, 1);
+
+  // امتیاز
+  let base = e.type==='tank' ? 30 : e.type==='fast' ? 20 : e.type==='flank' ? 25 : 10;
+  if (wasHead) base *= 2;
+  if (byGrenade) base = Math.round(base * 0.7);
+
+  // ضریب کمبو
+  const comboMult = Math.min(comboCount, 5);
+  player.score += base * (1 + comboMult * 0.2) | 0;
+
+  addCombo();
+  sfx.kill();
+  updateHUD();
+}
+
+function doReload() {
+  if (weapon.reloading) return;
+  if (weapon.mag >= weapon.magSize) return;
+  if (weapon.reserve <= 0) return;
+  weapon.reloading = true;
+  sfx.reload();
+  setTimeout(() => {
+    const need = weapon.magSize - weapon.mag;
+    const take = Math.min(need, weapon.reserve);
+    weapon.mag += take;
+    weapon.reserve -= take;
+    weapon.reloading = false;
+    updateAmmoUI();
+  }, 1400);
+}
+
+/* ================== UI ================== */
+function updateHUD() {
+  document.getElementById('score').textContent = player.score;
+  document.getElementById('waveNum').textContent = waveNum;
+  document.getElementById('enemyCount').textContent = enemies.length + enemiesLeftInWave;
+  document.getElementById('hp').textContent = Math.max(0, Math.round(player.hp));
+  document.getElementById('healthFill').style.width = Math.max(0, player.hp) + '%';
+}
+function updateAmmoUI() {
+  document.getElementById('mag').textContent = weapon.mag;
+  document.getElementById('reserve').textContent = weapon.reserve;
+}
+function updateGrenadeUI() {
+  document.getElementById('nades').textContent = grenade.count;
+  const b = document.getElementById('btnGrenade');
+  if (b) b.classList.toggle('dim', grenade.count === 0);
+}
+function showHitmarker(isHead) {
+  const h = document.getElementById('hitmarker');
+  h.classList.toggle('head', isHead);
+  h.style.opacity = '1';
+  setTimeout(() => h.style.opacity = '0', 130);
+}
+function damagePlayer(amount) {
+  player.hp -= amount;
+  sfx.hurt();
+  resetCombo();
+  const f = document.getElementById('damageFlash');
+  f.style.opacity = '0.9';
+  setTimeout(() => f.style.opacity = '0', 200);
+  updateHUD();
+  if (player.hp <= 0) gameOver();
+}
+
+/* ================== لیدربورد ================== */
+function getScores() {
+  try { return JSON.parse(localStorage.getItem('minicod_scores') || '[]'); }
+  catch { return []; }
+}
+function saveScore(score, wave) {
+  const b = getScores();
+  b.push({ score, wave, date: Date.now() });
+  b.sort((a,b) => b.score - a.score);
+  b.length = Math.min(b.length, 5);
+  try { localStorage.setItem('minicod_scores', JSON.stringify(b)); } catch {}
+  return b;
+}
+function renderBoard(current) {
+  const b = getScores();
+  const el = document.getElementById('board');
+  if (!b.length) { el.innerHTML = ''; return; }
+  let html = '<h3>🏆 بهترین امتیازها</h3>';
+  b.forEach((r, i) => {
+    const isMe = current && r.score === current && r.date >= Date.now() - 5000;
+    html += `<div class="row ${isMe?'me':''}">
+      <span>#${i+1} موج ${r.wave}</span>
+      <span>${r.score}</span>
+    </div>`;
+  });
+  el.innerHTML = html;
+}
+
+/* ================== وضعیت موج ================== */
+let running = false, waveNum = 0, waveTimer = 0, spawnTimer = 0;
+const SPAWN_INTERVAL = 1.2;
+let enemiesLeftInWave = 0, betweenWaves = false;
+
+function startWave(n) {
+  waveNum = n;
+  enemiesLeftInWave = 4 + n * 2;
+  betweenWaves = false;
+  spawnTimer = 0;
+  sfx.wave();
+  flashWave(`موج ${n}`);
+  // پاداش نارنجک
+  if (n % 2 === 0) { grenade.count = Math.min(grenade.maxCount, grenade.count + 1); updateGrenadeUI(); }
+  updateHUD();
+}
+function flashWave(text) {
+  const el = document.getElementById('wave');
+  el.textContent = text;
+  el.style.opacity = '1';
+  setTimeout(() => el.style.opacity = '0', 900);
+}
+
+function gameOver() {
+  running = false;
+  const ov = document.getElementById('overlay');
+  ov.style.display = 'flex';
+  ov.querySelector('h1').textContent = 'GAME OVER';
+  ov.querySelector('p').innerHTML = `امتیاز نهایی: <b style="color:#f55;font-size:22px;">${player.score}</b><br>
+    رسیدی به موج: <b>${waveNum}</b><br><br>دوباره تلاش کن!`;
+  document.getElementById('startBtn').textContent = 'شروع دوباره';
+  saveScore(player.score, waveNum);
+  renderBoard(player.score);
+}
+
+function resetGame() {
+  enemies.forEach(e => scene.remove(e.mesh)); enemies.length = 0;
+  grenades.forEach(g => scene.remove(g.mesh)); grenades.length = 0;
+  particles.forEach(p => scene.remove(p)); particles.length = 0;
+
+  player.pos.set(0, 1.7, 0);
+  player.vel.set(0, 0, 0);
+  player.hp = 100; player.score = 0; player.onGround = true;
+  yaw = 0; pitch = 0;
+  weapon.mag = weapon.magSize;
+  weapon.reserve = 120;
+  weapon.reloading = false;
+  grenade.count = 3; grenade.throwing = false;
+  waveNum = 0; waveTimer = 0; betweenWaves = true;
+  comboCount = 0; comboTime = 0;
+
+  updateAmmoUI(); updateGrenadeUI(); updateHUD();
+}
+
+/* ================== ورودی ================== */
+const isTouch = matchMedia('(pointer: coarse)').matches;
+const isDesktop = !isTouch;
+const moveInput = new THREE.Vector2();
+let wantJump = false, firing = false, wantGrenade = false;
+const keys = {};
+
+if (isDesktop) {
+  renderer.domElement.addEventListener('click', () => {
+    if (document.pointerLockElement !== renderer.domElement)
+      renderer.domElement.requestPointerLock();
+  });
+  document.addEventListener('mousemove', e => {
+    if (document.pointerLockElement !== renderer.domElement) return;
+    yaw   -= e.movementX * 0.0022;
+    pitch -= e.movementY * 0.0022;
+    pitch = Math.max(-Math.PI/2+0.05, Math.min(Math.PI/2-0.05, pitch));
+  });
+  addEventListener('keydown', e => {
+    keys[e.code] = true;
+    if (e.code === 'KeyR') doReload();
+    if (e.code === 'KeyG') wantGrenade = true;
+  });
+  addEventListener('keyup', e => keys[e.code] = false);
+  addEventListener('mousedown', e => { if (e.button === 0) { firing = true; tryShoot(); } });
+  addEventListener('mouseup',   e => { if (e.button === 0) firing = false; });
+}
+
+if (isTouch) {
+  const joy = document.getElementById('joystick');
+  const knob = document.getElementById('joyKnob');
+  const JOY_R = 50;
+  let joyId = null;
+
+  const updateKnob = t => {
+    const r = joy.getBoundingClientRect();
+    const cx = r.left + r.width/2, cy = r.top + r.height/2;
+    let dx = t.clientX - cx, dy = t.clientY - cy;
+    const l = Math.hypot(dx, dy);
+    if (l > JOY_R) { dx = dx/l*JOY_R; dy = dy/l*JOY_R; }
+    knob.style.transform = `translate(${dx}px, ${dy}px)`;
+    moveInput.set(dx/JOY_R, -dy/JOY_R);
+  };
+  joy.addEventListener('touchstart', e => { e.preventDefault(); joyId = e.changedTouches[0].identifier; updateKnob(e.changedTouches[0]); }, { passive:false });
+  joy.addEventListener('touchmove',  e => { e.preventDefault(); for (const t of e.changedTouches) if (t.identifier===joyId) updateKnob(t); }, { passive:false });
+  const endJoy = e => { for (const t of e.changedTouches) if (t.identifier===joyId) { joyId=null; knob.style.transform='translate(0,0)'; moveInput.set(0,0); } };
+  joy.addEventListener('touchend', endJoy);
+  joy.addEventListener('touchcancel', endJoy);
+
+  let lookId = null, lastX = 0, lastY = 0;
+  renderer.domElement.addEventListener('touchstart', e => {
+    e.preventDefault();
+    for (const t of e.changedTouches) if (lookId === null) { lookId = t.identifier; lastX = t.clientX; lastY = t.clientY; }
+  }, { passive:false });
+  renderer.domElement.addEventListener('touchmove', e => {
+    e.preventDefault();
+    for (const t of e.changedTouches) if (t.identifier===lookId) {
+      yaw   -= (t.clientX - lastX) * 0.006;
+      pitch -= (t.clientY - lastY) * 0.006;
+      pitch = Math.max(-Math.PI/2+0.05, Math.min(Math.PI/2-0.05, pitch));
+      lastX = t.clientX; lastY = t.clientY;
+    }
+  }, { passive:false });
+  const endLook = e => { for (const t of e.changedTouches) if (t.identifier===lookId) lookId = null; };
+  renderer.domElement.addEventListener('touchend', endLook);
+  renderer.domElement.addEventListener('touchcancel', endLook);
+
+  const bf = document.getElementById('btnFire');
+  bf.addEventListener('touchstart', e => { e.preventDefault(); firing = true; tryShoot(); }, { passive:false });
+  bf.addEventListener('touchend',   e => { e.preventDefault(); firing = false; });
+  bf.addEventListener('touchcancel',e => { firing = false; });
+  document.getElementById('btnReload').addEventListener('touchstart', e => { e.preventDefault(); doReload(); }, { passive:false });
+  document.getElementById('btnJump').addEventListener('touchstart',   e => { e.preventDefault(); wantJump = true; setTimeout(()=>wantJump=false, 120); }, { passive:false });
+  document.getElementById('btnGrenade').addEventListener('touchstart',e => { e.preventDefault(); wantGrenade = true; }, { passive:false });
+}
+
+/* ================== برخورد بازیکن ================== */
+function collidePlayer(pos) {
+  const r = 0.4;
+  for (const ob of obstacles) {
+    const { w, h, d, x, z } = ob.userData;
+    if (Math.abs(pos.x - x) < w/2 + r && Math.abs(pos.z - z) < d/2 + r && pos.y - 1.7/2 < h) return true;
+  }
+  if (Math.abs(pos.x) > ARENA - 0.6 || Math.abs(pos.z) > ARENA - 0.6) return true;
+  return false;
+}
+
+/* ================== حلقهٔ اصلی ================== */
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  const now = performance.now();
+
+  if (running) {
+    // حرکت
+    if (isDesktop) {
+      moveInput.set(0, 0);
+      if (keys['KeyW']) moveInput.y += 1;
+      if (keys['KeyS']) moveInput.y -= 1;
+      if (keys['KeyD']) moveInput.x += 1;
+      if (keys['KeyA']) moveInput.x -= 1;
+      if (moveInput.lengthSq() > 1) moveInput.normalize();
+      if (keys['Space'] && player.onGround) { player.vel.y = 7; player.onGround = false; }
+      if (firing && now - weapon.lastShot >= weapon.fireRate) tryShoot();
+    }
+    if (wantJump && player.onGround) { player.vel.y = 7; player.onGround = false; wantJump = false; }
+    if (wantGrenade) { throwGrenade(); wantGrenade = false; }
+
+    const SPEED = 5.5;
+    const forward = new THREE.Vector3(-Math.sin(yaw), 0, -Math.cos(yaw));
+    const right   = new THREE.Vector3(Math.cos(yaw), 0, -Math.sin(yaw));
+    const move = new THREE.Vector3();
+    move.addScaledVector(forward, moveInput.y);
+    move.addScaledVector(right,   moveInput.x);
+    if (move.lengthSq() > 0) move.normalize().multiplyScalar(SPEED * dt);
+
+    player.vel.y -= 22 * dt;
+
+    const nx = player.pos.clone(); nx.x += move.x;
+    if (!collidePlayer(nx)) player.pos.x = nx.x;
+    const nz = player.pos.clone(); nz.z += move.z;
+    if (!collidePlayer(nz)) player.pos.z = nz.z;
+    const ny = player.pos.clone(); ny.y += player.vel.y * dt;
+    if (ny.y <= 1.7) { player.pos.y = 1.7; player.vel.y = 0; player.onGround = true; }
+    else { player.pos.y = ny.y; player.onGround = false; }
+
+    // کمبو
+    if (comboTime > 0) { comboTime -= dt; if (comboTime <= 0) resetCombo(); }
+
+    // موج‌ها
+    if (betweenWaves) {
+      waveTimer += dt;
+      if (waveTimer > 2.5) { startWave(waveNum + 1); waveTimer = 0; }
+    } else {
+      if (enemiesLeftInWave > 0) {
+        spawnTimer += dt;
+        if (spawnTimer >= SPAWN_INTERVAL && enemies.length < 14) {
+          spawnEnemy(waveNum);
+          enemiesLeftInWave--;
+          spawnTimer = 0;
+          updateHUD();
+        }
+      } else if (enemies.length === 0) {
+        betweenWaves = true;
+        waveTimer = 0;
+        flashWave(`موج ${waveNum} تمام!`);
       }
     }
 
-    function openModal(id) {
-      document.getElementById(id).classList.add("show");
-    }
+    // AI دشمن
+    for (const e of enemies) {
+      const toPlayer = new THREE.Vector3().subVectors(player.pos, e.mesh.position);
+      toPlayer.y = 0;
+      const dist = toPlayer.length();
+      const dirXZ = toPlayer.clone().normalize();
 
-    function closeModal(id) {
-      document.getElementById(id).classList.remove("show");
-    }
-
-    function fakeSubmit(message) {
-      showToast(message);
-
-      document.querySelectorAll(".modal-backdrop")
-        .forEach(modal => {
-          modal.classList.remove("show");
-        });
-    }
-
-    function addToCart(product) {
-      showToast(product + " به سبد خرید اضافه شد 🛒");
-    }
-
-    function downloadLauncher() {
-      showToast("دانلود لانچر KING MC به‌زودی فعال می‌شود.");
-    }
-
-    /* فیلتر محصولات */
-    const categoryButtons = document.querySelectorAll(".category");
-    const products = document.querySelectorAll(".product");
-
-    categoryButtons.forEach(button => {
-      button.addEventListener("click", () => {
-        categoryButtons.forEach(btn => {
-          btn.classList.remove("active");
-        });
-
-        button.classList.add("active");
-
-        const filter = button.dataset.filter;
-
-        products.forEach(product => {
-          if (
-            filter === "all" ||
-            product.dataset.category === filter
-          ) {
-            product.style.display = "block";
-          } else {
-            product.style.display = "none";
-          }
-        });
-      });
-    });
-
-    /* بستن پنجره با کلیک بیرون */
-    document.querySelectorAll(".modal-backdrop")
-      .forEach(backdrop => {
-        backdrop.addEventListener("click", event => {
-          if (event.target === backdrop) {
-            backdrop.classList.remove("show");
-          }
-        });
-      });
-
-    /* بستن پنجره با دکمه Escape */
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape") {
-        document.querySelectorAll(".modal-backdrop")
-          .forEach(modal => {
-            modal.classList.remove("show");
-          });
+      // flank: دور بازیکن بچرخ
+      let moveVec = new THREE.Vector3();
+      if (e.type === 'flank' && dist > e.preferDist) {
+        // موازی + نزدیک شدن
+        const perp = new THREE.Vector3(-dirXZ.z, 0, dirXZ.x).multiplyScalar(e.orbitDir);
+        moveVec.copy(dirXZ).multiplyScalar(0.3).add(perp);
+        moveVec.normalize();
+      } else {
+        moveVec.copy(dirXZ);
       }
-    });
-  </script>
+      if (dist > e.preferDist) {
+        e.mesh.position.addScaledVector(moveVec, e.speed * dt);
+      } else if (e.type === 'flank') {
+        // در فاصله مناسب، دور بزن
+        const perp = new THREE.Vector3(-dirXZ.z, 0, dirXZ.x).multiplyScalar(e.orbitDir);
+        e.mesh.position.addScaledVector(perp, e.speed * 0.7 * dt);
+      }
 
+      // چهره به بازیکن
+      e.mesh.lookAt(player.pos.x, e.mesh.position.y, player.pos.z);
+
+      // آسیب تماس
+      if (dist < 1.2 && now - e.lastDamage > 500) {
+        e.lastDamage = now;
+        damagePlayer(12);
+      }
+    }
+
+    // نارنجک‌ها
+    for (let i = grenades.length - 1; i >= 0; i--) {
+      const g = grenades[i];
+      g.fuse -= dt;
+      g.vel.y -= 15 * dt;
+      g.mesh.position.addScaledVector(g.vel, dt);
+      // برخورد با زمین
+      if (g.mesh.position.y < 0.15) { g.mesh.position.y = 0.15; g.vel.y *= -0.4; g.vel.x *= 0.7; g.vel.z *= 0.7; }
+      // برخورد با موانع (ساده)
+      for (const ob of obstacles) {
+        const { w, h, d, x, z } = ob.userData;
+        if (Math.abs(g.mesh.position.x - x) < w/2 + 0.15 &&
+            Math.abs(g.mesh.position.z - z) < d/2 + 0.15 &&
+            g.mesh.position.y < h + 0.15) {
+          // انعکاس ساده
+          g.vel.x *= -0.5; g.vel.z *= -0.5;
+          g.mesh.position.addScaledVector(g.vel, dt*2);
+        }
+      }
+      // چشمک زدن
+      if (g.fuse < 1) {
+        g.mesh.material = g.mesh.material.clone();
+        g.mesh.material.emissive = new THREE.Color(g.fuse % 0.3 < 0.15 ? 0xff0000 : 0x000000);
+      }
+      if (g.fuse <= 0) explodeGrenade(g);
+    }
+
+    // ذرات
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.userData.vel.y -= (p.userData.gravity || 15) * dt;
+      p.position.addScaledVector(p.userData.vel, dt);
+      if (p.position.y < 0.05) { p.position.y = 0.05; p.userData.vel.y *= -0.3; }
+      p.userData.life -= dt;
+      if (p.userData.life <= 0) { scene.remove(p); particles.splice(i,1); }
+    }
+  }
+
+  // دوربین
+  camera.position.copy(player.pos);
+  camera.rotation.order = 'YXZ';
+  camera.rotation.y = yaw;
+  camera.rotation.x = pitch;
+
+  // انیمیشن اسلحه
+  gunKick = Math.max(0, gunKick - dt * 8);
+  gunGroup.position.z = -0.4 + gunKick * 0.15;
+  gunGroup.rotation.x = gunKick * 0.3;
+
+  if (running && (Math.abs(moveInput.x) > 0.1 || Math.abs(moveInput.y) > 0.1)) {
+    const t = performance.now() * 0.012;
+    camera.position.y = player.pos.y + Math.sin(t) * 0.04;
+    gunGroup.position.x = 0.25 + Math.cos(t*0.5) * 0.01;
+  } else {
+    gunGroup.position.x = 0.25;
+  }
+
+  renderer.render(scene, camera);
+}
+animate();
+
+/* ================== شروع ================== */
+document.getElementById('startBtn').addEventListener('click', () => {
+  initAudio();
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  document.getElementById('overlay').style.display = 'none';
+  resetGame();
+  running = true;
+});
+
+renderBoard();
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+</script>
 </body>
 </html>
