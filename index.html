@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Mini CoD - Full Edition</title>
+<title>Mini CoD - Ultimate</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; user-select:none; }
   html,body { width:100%; height:100%; overflow:hidden; background:#111; font-family:-apple-system,sans-serif; touch-action:none; }
@@ -20,26 +20,34 @@
   #hitmarker::after  { transform:rotate(-45deg); }
   #hitmarker.head::before, #hitmarker.head::after { background:#ffdd00; }
 
+  #bossBar { position:absolute; top:55px; left:50%; transform:translateX(-50%); width:min(72%,420px); display:none; text-align:center; }
+  #bossName { font-size:14px; font-weight:bold; color:#ff5555; text-shadow:0 0 8px #000; margin-bottom:4px; letter-spacing:1px; }
+  #bossBarOuter { width:100%; height:16px; background:rgba(0,0,0,0.65); border:2px solid #ff5555; border-radius:4px; overflow:hidden; box-shadow:0 0 12px rgba(255,0,0,0.5); }
+  #bossBarFill { height:100%; background:linear-gradient(90deg,#ff2222,#ff6644); width:100%; transition:width 0.15s; }
+
   #healthBar { position:absolute; bottom:20px; left:20px; width:180px; height:14px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.3); border-radius:3px; overflow:hidden; }
   #healthFill { height:100%; width:100%; background:linear-gradient(90deg,#e33,#f55); transition:width .2s; }
-  #healthText { position:absolute; bottom:38px; left:22px; font-size:12px; font-weight:bold; text-shadow:0 0 4px #000; }
+  #armorBar { position:absolute; bottom:38px; left:20px; width:180px; height:8px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.3); border-radius:3px; overflow:hidden; }
+  #armorFill { height:100%; width:0%; background:linear-gradient(90deg,#36f,#6cf); transition:width .2s; }
+  #healthText { position:absolute; bottom:52px; left:22px; font-size:12px; font-weight:bold; text-shadow:0 0 4px #000; }
 
   #ammo { position:absolute; bottom:20px; right:20px; font-size:20px; font-weight:bold; text-shadow:0 0 6px #000; color:#ffd; text-align:right; }
   #ammo small { font-size:12px; opacity:0.7; display:block; }
-  #grenadeCount { position:absolute; bottom:20px; right:170px; font-size:16px; font-weight:bold; text-shadow:0 0 6px #000; color:#8f8; }
+  #grenadeCount { position:absolute; bottom:60px; right:22px; font-size:15px; font-weight:bold; text-shadow:0 0 6px #000; color:#8f8; }
 
   #wave { position:absolute; top:35%; left:50%; transform:translate(-50%,-50%); font-size:44px; font-weight:bold; color:#fff; opacity:0; text-shadow:0 0 20px #f00; pointer-events:none; transition:opacity .4s; text-align:center; }
   #damageFlash { position:absolute; inset:0; background:radial-gradient(circle, transparent 40%, rgba(255,0,0,0.7)); opacity:0; transition:opacity .15s; pointer-events:none; }
-  #combo { position:absolute; top:30%; left:50%; transform:translateX(-50%); font-size:28px; font-weight:bold; color:#ffaa00; text-shadow:0 0 15px #f80; opacity:0; transition:opacity .3s; }
-  #throwArc { position:absolute; inset:0; pointer-events:none; }
+  #armorFlash { position:absolute; inset:0; background:radial-gradient(circle, transparent 40%, rgba(60,150,255,0.6)); opacity:0; transition:opacity .15s; pointer-events:none; }
+  #combo { position:absolute; top:28%; left:50%; transform:translateX(-50%); font-size:28px; font-weight:bold; color:#ffaa00; text-shadow:0 0 15px #f80; opacity:0; transition:opacity .3s; }
+  #pickupToast { position:absolute; bottom:120px; left:50%; transform:translateX(-50%); font-size:16px; font-weight:bold; color:#fff; text-shadow:0 0 8px #000; opacity:0; transition:opacity .4s; }
 
   #overlay { position:absolute; inset:0; background:rgba(0,0,0,0.88); color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; z-index:100; overflow-y:auto; }
-  #overlay h1 { font-size:28px; margin-bottom:10px; letter-spacing:2px; color:#f55; text-shadow:0 0 15px #f00; }
-  #overlay p { font-size:13px; line-height:1.9; opacity:0.85; max-width:360px; }
+  #overlay h1 { font-size:26px; margin-bottom:10px; letter-spacing:2px; color:#f55; text-shadow:0 0 15px #f00; }
+  #overlay p { font-size:13px; line-height:1.85; opacity:0.85; max-width:380px; }
   #overlay button { margin-top:18px; padding:12px 36px; font-size:17px; font-weight:bold; color:#fff; background:#c33; border:none; border-radius:8px; letter-spacing:1px; box-shadow:0 0 15px rgba(255,0,0,0.5); cursor:pointer; }
   #overlay button:active { transform:scale(0.96); }
   #overlay .small { font-size:11px; opacity:0.6; margin-top:10px; }
-  #board { margin-top:16px; width:280px; text-align:right; }
+  #board { margin-top:14px; width:290px; text-align:right; }
   #board h3 { font-size:14px; color:#ffdd00; margin-bottom:8px; text-align:center; }
   #board .row { display:flex; justify-content:space-between; font-size:13px; padding:4px 8px; border-bottom:1px solid rgba(255,255,255,0.1); }
   #board .row.me { background:rgba(255,200,0,0.15); color:#ffdd00; font-weight:bold; }
@@ -50,11 +58,9 @@
   #btnJump { position:absolute; bottom:30px; right:135px; width:70px; height:70px; border-radius:50%; background:rgba(200,180,40,0.5); border:3px solid rgba(255,255,255,0.6); color:#fff; font-weight:bold; font-size:11px; display:flex; align-items:center; justify-content:center; touch-action:none; }
   #joystick { position:absolute; bottom:30px; left:30px; width:120px; height:120px; border-radius:50%; background:rgba(255,255,255,0.15); border:2px solid rgba(255,255,255,0.3); touch-action:none; }
   #joyKnob { position:absolute; top:50%; left:50%; width:52px; height:52px; margin:-26px 0 0 -26px; border-radius:50%; background:rgba(255,255,255,0.5); border:2px solid rgba(255,255,255,0.85); }
-  #btnGrenade.dim { opacity:0.35; }
 
   @media (pointer: fine) {
     #joystick, #btnFire, #btnReload, #btnJump, #btnGrenade { display:none; }
-    #grenadeCount { right:22px; bottom:60px; }
   }
 </style>
 </head>
@@ -65,12 +71,19 @@
     <div>🌊 موج <span id="waveNum">1</span></div>
     <div>🎯 <span id="enemyCount">0</span></div>
   </div>
+  <div id="bossBar">
+    <div id="bossName">👹 BOSS</div>
+    <div id="bossBarOuter"><div id="bossBarFill"></div></div>
+  </div>
   <div id="crosshair"></div>
   <div id="hitmarker"></div>
   <div id="damageFlash"></div>
+  <div id="armorFlash"></div>
   <div id="combo"></div>
+  <div id="pickupToast"></div>
   <div id="healthText">❤️ <span id="hp">100</span></div>
   <div id="healthBar"><div id="healthFill"></div></div>
+  <div id="armorBar"><div id="armorFill"></div></div>
   <div id="ammo"><span id="mag">30</span> / <span id="reserve">120</span><small>🔫</small></div>
   <div id="grenadeCount">💣 <span id="nades">3</span></div>
   <div id="wave"></div>
@@ -79,22 +92,24 @@
 <div id="joystick"><div id="joyKnob"></div></div>
 <div id="btnFire">شلیک</div>
 <div id="btnReload">ریلود</div>
-<div id="btnGrenade">💣 نارنجک</div>
+<div id="btnGrenade">💣</div>
 <div id="btnJump">پرش</div>
 
 <div id="overlay">
   <h1>MINI CALL OF DUTY</h1>
   <p>
-    موج‌ها میان، بکش و زنده بمون.<br>
-    <b>🎯 هدشات</b> = ۲x آسیب و امتیاز بیشتر<br>
-    <b>💣 نارنجک</b> = انفجار شعاعی (کلید G)<br>
-    <b>⚡ Combo</b> = کشتن پشت سر هم، امتیاز ضربدری<br><br>
-    <b>موبایل:</b> جوی‌استیک + کشیدن انگشت<br>
+    <b>🎯 هدف:</b> همهٔ بات‌ها رو بکش → باس اسپان می‌شه → باس رو بزن → موج بعد<br>
+    <b>🛡️ زره</b> ۷۰٪ آسیب رو جذب می‌کنه<br>
+    <b>🎁 پیکاپ‌ها:</b> ❤️ جان • 🛡️ زره • 🔫 تیر • 💣 نارنجک<br>
+    <b>🔫 دشمن‌های تیرانداز</b> از دور بهت شلیک می‌کنن<br>
+    <b>👹 باس هر موج گنده‌تر و قوی‌تر می‌شه</b><br>
+    <b>💀 موج ۱۰+</b> خیلی سخت می‌شه!<br><br>
+    <b>موبایل:</b> جوی‌استیک + کشیدن انگشت + دکمه‌ها<br>
     <b>دسکتاپ:</b> WASD + موس + کلیک + R + Space + G
   </p>
   <button id="startBtn">شروع بازی</button>
   <div id="board"></div>
-  <div class="small">هر ۵ موج دشمن‌ها قوی‌تر می‌شن</div>
+  <div class="small">Tip: پیکاپ‌ها رو حتماً بردار، بدون زره موج ۱۰ غیرممکنه</div>
 </div>
 
 <script type="importmap">
@@ -105,12 +120,12 @@
 import * as THREE from 'three';
 
 /* ================== پایه ================== */
-const ARENA = 42;
+const ARENA = 45;
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x1a1a22);
-scene.fog = new THREE.Fog(0x1a1a22, 20, 65);
+scene.fog = new THREE.Fog(0x1a1a22, 22, 70);
 
-const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 200);
+const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 220);
 const renderer = new THREE.WebGLRenderer({ antialias:true });
 renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -172,22 +187,28 @@ function playSound(freq, dur, type='square', vol=0.15, slideTo=null) {
 }
 const sfx = {
   shoot: () => { playSound(180,0.08,'square',0.09); playSound(80,0.12,'sawtooth',0.07); },
+  enemyShoot: () => playSound(120,0.1,'sawtooth',0.08,60),
   hit:   () => playSound(800,0.05,'square',0.1),
   head:  () => { playSound(1200,0.06,'square',0.12); playSound(1600,0.08,'square',0.1); },
   kill:  () => { playSound(400,0.1,'sawtooth',0.12); playSound(200,0.2,'sawtooth',0.1); },
   reload:() => { playSound(300,0.06,'square',0.08); setTimeout(()=>playSound(500,0.06,'square',0.08),200); },
   hurt:  () => playSound(120,0.2,'sawtooth',0.15),
   wave:  () => { playSound(500,0.15,'square',0.12); setTimeout(()=>playSound(700,0.2,'square',0.12),200); },
+  bossSpawn: () => { playSound(80,0.6,'sawtooth',0.25,40); setTimeout(()=>playSound(60,0.8,'sawtooth',0.2,30),300); },
+  bossDie: () => { playSound(400,0.3,'sawtooth',0.2,100); setTimeout(()=>playSound(200,0.6,'sawtooth',0.2,40),200); },
   nadeThrow: () => playSound(500,0.1,'sine',0.12,200),
   explode: () => { playSound(80,0.4,'sawtooth',0.3,30); playSound(200,0.3,'square',0.2,40); },
   combo: () => playSound(1400,0.1,'sine',0.12,1800),
+  pickup: () => { playSound(800,0.08,'sine',0.12,1200); },
 };
 
 /* ================== بازیکن ================== */
 const player = {
   pos: new THREE.Vector3(0, 1.7, 0),
   vel: new THREE.Vector3(),
-  hp: 100, score: 0, onGround: true,
+  hp: 100, maxHp: 100,
+  armor: 0, maxArmor: 100,
+  score: 0, onGround: true,
 };
 let yaw = 0, pitch = 0;
 
@@ -196,8 +217,7 @@ const weapon = { mag:30, magSize:30, reserve:120, maxReserve:240, reloading:fals
 const grenade = { count:3, maxCount:5, throwing:false };
 
 const gunGroup = new THREE.Group();
-const gm = new THREE.MeshLambertMaterial({ color: 0x1a1a1a });
-const gunBody = new THREE.Mesh(new THREE.BoxGeometry(0.12,0.12,0.6), gm);
+const gunBody = new THREE.Mesh(new THREE.BoxGeometry(0.12,0.12,0.6), new THREE.MeshLambertMaterial({ color:0x1a1a1a }));
 gunBody.position.set(0,0,-0.3); gunGroup.add(gunBody);
 const gunBarrel = new THREE.Mesh(new THREE.BoxGeometry(0.06,0.06,0.5), new THREE.MeshLambertMaterial({ color:0x333 }));
 gunBarrel.position.set(0,0.02,-0.7); gunGroup.add(gunBarrel);
@@ -216,120 +236,154 @@ const enemyMats = {
   fast:   new THREE.MeshLambertMaterial({ color: 0xff8800 }),
   tank:   new THREE.MeshLambertMaterial({ color: 0x8800cc }),
   flank:  new THREE.MeshLambertMaterial({ color: 0x33cccc }),
+  shooter:new THREE.MeshLambertMaterial({ color: 0xdd44dd }),
 };
 
 function spawnEnemy(wave) {
   const roll = Math.random();
   let type='normal', speed=1.2+wave*0.08, hp=1, size=1;
-  if (wave >= 2 && roll < 0.25) { type='fast'; speed*=1.75; }
-  else if (wave >= 4 && roll > 0.88) { type='tank'; speed*=0.6; hp=3; size=1.35; }
-  else if (wave >= 3 && roll > 0.6 && roll < 0.75) { type='flank'; speed*=1.1; }
+  if (wave >= 2 && roll < 0.20) { type='fast'; speed*=1.75; }
+  else if (wave >= 4 && roll > 0.85) { type='tank'; speed*=0.6; hp=3; size=1.35; }
+  else if (wave >= 3 && roll > 0.55 && roll < 0.72) { type='flank'; speed*=1.1; }
+  else if (wave >= 4 && roll > 0.72 && roll < 0.85) { type='shooter'; speed*=0.75; hp=2; size=1.05; }
+
+  // موج ۱۰+ boost
+  if (wave >= 10) {
+    const boost = 1 + (wave - 9) * 0.08;
+    speed *= boost;
+    if (type === 'tank') hp += Math.floor((wave-9)/3);
+  }
+  // cap سرعت
+  if (type === 'fast') speed = Math.min(speed, 6.5);
+  else speed = Math.min(speed, 4.2);
 
   const mesh = new THREE.Mesh(enemyGeo, enemyMats[type]);
   mesh.scale.setScalar(size);
   const angle = Math.random() * Math.PI * 2;
-  const dist = 22 + Math.random() * 8;
+  const dist = 22 + Math.random() * 10;
   mesh.position.set(Math.cos(angle)*dist, 0.8*size, Math.sin(angle)*dist);
   scene.add(mesh);
 
-  // AI: زاویهٔ چرخش دور بازیکن (flank)
   const orbitDir = Math.random() < 0.5 ? 1 : -1;
-  const preferDist = type === 'flank' ? 5 : (type === 'tank' ? 1 : 1.2);
+  const preferDist = type === 'flank' ? 5 : (type === 'shooter' ? 11 : 1.2);
   enemies.push({
     mesh, speed, hp, maxHp:hp, type, size,
     orbitDir, preferDist,
-    orbitPhase: Math.random() * Math.PI * 2,
     lastDamage: 0,
+    lastShot: 0,
+    shootInterval: 1400 + Math.random()*600,
   });
 }
 
-/* ================== نارنجک ================== */
-const grenades = []; // { mesh, vel, fuse, exploded }
-const grenadeGeo = new THREE.SphereGeometry(0.15, 8, 8);
-const grenadeMat = new THREE.MeshLambertMaterial({ color: 0x334422 });
+/* ================== باس ================== */
+let boss = null;
+const bossBarEl = document.getElementById('bossBar');
+const bossFillEl = document.getElementById('bossBarFill');
+const bossNameEl = document.getElementById('bossName');
 
-function throwGrenade() {
-  if (grenade.count <= 0 || grenade.throwing) return;
-  grenade.count--;
-  grenade.throwing = true;
-  updateGrenadeUI();
-  sfx.nadeThrow();
-
-  const mesh = new THREE.Mesh(grenadeGeo, grenadeMat);
-  // موقعیت از دوربین
-  const startPos = new THREE.Vector3();
-  camera.getWorldPosition(startPos);
-  startPos.y -= 0.1;
-  mesh.position.copy(startPos);
+function spawnBoss(wave) {
+  const size = Math.min(2.2 + wave * 0.18, 5.5);
+  const hp = 40 + wave * 25;
+  const geo = new THREE.IcosahedronGeometry(1.2, 0);
+  const mat = new THREE.MeshLambertMaterial({
+    color: 0xaa00ff, emissive: 0x5500aa, emissiveIntensity: 0.6,
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.scale.setScalar(size);
+  // اسپان دور از بازیکن
+  const angle = Math.random() * Math.PI * 2;
+  mesh.position.set(Math.cos(angle)*22, size*1.2, Math.sin(angle)*22);
   scene.add(mesh);
 
-  // جهت پرتاب
-  const dirVec = new THREE.Vector3();
-  camera.getWorldDirection(dirVec);
-  const vel = dirVec.clone().multiplyScalar(18);
-  vel.y += 4;
+  boss = {
+    mesh, hp, maxHp: hp, size,
+    speed: 1.5 + wave*0.04,
+    lastShot: 0, lastDamage: 0,
+    spin: 0,
+  };
 
-  grenades.push({ mesh, vel, fuse: 2.5, exploded: false });
-
-  // انیمیشن پرتاب (اسلحه پایین میاد)
-  gunKick = 1.5;
-  setTimeout(() => grenade.throwing = false, 500);
+  bossBarEl.style.display = 'block';
+  bossNameEl.textContent = `👹 BOSS موج ${wave}  —  ${hp}HP`;
+  bossFillEl.style.width = '100%';
+  sfx.bossSpawn();
+  flashWave(`👹 BOSS موج ${wave}!`);
 }
 
-function explodeGrenade(g) {
-  const pos = g.mesh.position.clone();
-  scene.remove(g.mesh);
+/* ================== گلوله‌ها ================== */
+const bullets = []; // enemy bullets
+const bulletGeo = new THREE.SphereGeometry(0.14, 6, 6);
+const bulletMat = new THREE.MeshBasicMaterial({ color: 0xff4422 });
 
-  // فلاش نور
-  const flash = new THREE.PointLight(0xffaa33, 20, 15);
-  flash.position.copy(pos);
-  scene.add(flash);
-  const flashMesh = new THREE.Mesh(new THREE.SphereGeometry(2, 12, 12), new THREE.MeshBasicMaterial({ color:0xffaa33, transparent:true, opacity:0.6 }));
-  flashMesh.position.copy(pos);
-  scene.add(flashMesh);
-  setTimeout(() => { scene.remove(flash); scene.remove(flashMesh); }, 200);
+function spawnEnemyBullet(from, target, dmg = 8, speed = 18) {
+  const dirVec = new THREE.Vector3().subVectors(target, from).normalize();
+  dirVec.y += 0.02;
+  const mesh = new THREE.Mesh(bulletGeo, bulletMat);
+  mesh.position.copy(from);
+  scene.add(mesh);
+  bullets.push({ mesh, vel: dirVec.multiplyScalar(speed), life: 3, damage: dmg });
+}
 
-  // ذرات انفجار
-  for (let i = 0; i < 20; i++) {
-    const p = new THREE.Mesh(new THREE.BoxGeometry(0.15,0.15,0.15), new THREE.MeshBasicMaterial({ color: i%2 ? 0xffaa33 : 0xff5522 }));
-    p.position.copy(pos);
-    p.userData = {
-      vel: new THREE.Vector3((Math.random()-0.5)*12, Math.random()*8+2, (Math.random()-0.5)*12),
-      life: 0.7 + Math.random()*0.4,
-      gravity: 12,
-    };
-    scene.add(p);
-    particles.push(p);
+/* ================== پیکاپ‌ها ================== */
+const pickups = [];
+const PICKUP_DEFS = {
+  health: { color: 0xff3355, size: 0.35, label: '❤️ +40 جان' },
+  armor:  { color: 0x3399ff, size: 0.35, label: '🛡️ +50 زره' },
+  ammo:   { color: 0xffcc00, size: 0.35, label: '🔫 +60 تیر' },
+  grenade:{ color: 0x44dd44, size: 0.35, label: '💣 +2 نارنجک' },
+};
+const pickupGeo = new THREE.BoxGeometry(1,1,1);
+
+function spawnPickup(type, pos = null) {
+  const def = PICKUP_DEFS[type];
+  const mat = new THREE.MeshLambertMaterial({ color: def.color, emissive: def.color, emissiveIntensity: 0.5 });
+  const mesh = new THREE.Mesh(pickupGeo, mat);
+  const s = def.size * 2;
+  mesh.scale.setScalar(s);
+  if (pos) {
+    mesh.position.copy(pos);
+    mesh.position.y = 0.5;
+  } else {
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 8 + Math.random() * (ARENA - 12);
+    mesh.position.set(Math.cos(angle)*dist, 0.5, Math.sin(angle)*dist);
   }
+  mesh.userData = { type, bobPhase: Math.random() * Math.PI * 2, bornAt: performance.now() };
+  scene.add(mesh);
+  pickups.push(mesh);
+}
 
-  sfx.explode();
-
-  // آسیب شعاعی به دشمنان
-  const R = 5;
-  for (let i = enemies.length - 1; i >= 0; i--) {
-    const e = enemies[i];
-    const d = e.mesh.position.distanceTo(pos);
-    if (d < R) {
-      const dmg = Math.max(1, Math.round((1 - d/R) * 5));
-      e.hp -= dmg;
-      // پرش به عقب
-      const push = new THREE.Vector3().subVectors(e.mesh.position, pos).normalize().multiplyScalar(2);
-      e.mesh.position.add(push);
-      if (e.hp <= 0) killEnemy(i, true);
-    }
+function collectPickup(mesh) {
+  const t = mesh.userData.type;
+  if (t === 'health') {
+    player.hp = Math.min(player.maxHp, player.hp + 40);
+  } else if (t === 'armor') {
+    player.armor = Math.min(player.maxArmor, player.armor + 50);
+  } else if (t === 'ammo') {
+    weapon.reserve = Math.min(weapon.maxReserve, weapon.reserve + 60);
+    updateAmmoUI();
+  } else if (t === 'grenade') {
+    grenade.count = Math.min(grenade.maxCount, grenade.count + 2);
+    updateGrenadeUI();
   }
+  sfx.pickup();
+  showPickupToast(PICKUP_DEFS[t].label);
+  scene.remove(mesh);
+  pickups.splice(pickups.indexOf(mesh), 1);
+  updateHUD();
+}
 
-  // آسیب به بازیکن اگه نزدیکه
-  const distP = player.pos.distanceTo(pos);
-  if (distP < R) damagePlayer(Math.round((1 - distP/R) * 40));
-
-  // پاکسازی
-  grenades.splice(grenades.indexOf(g), 1);
+function showPickupToast(text) {
+  const el = document.getElementById('pickupToast');
+  el.textContent = text;
+  el.style.opacity = '1';
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.style.opacity = '0', 900);
 }
 
 /* ================== ذرات ================== */
 const particles = [];
 function spawnBlood(pos, color=0xaa2222) {
+  if (particles.length > 120) return;
   for (let i = 0; i < 5; i++) {
     const p = new THREE.Mesh(new THREE.BoxGeometry(0.1,0.1,0.1), new THREE.MeshBasicMaterial({ color }));
     p.position.copy(pos);
@@ -356,11 +410,9 @@ function addCombo() {
     setTimeout(() => el.style.opacity = '0', 700);
   }
 }
-function resetCombo() {
-  comboCount = 0;
-}
+function resetCombo() { comboCount = 0; }
 
-/* ================== تیراندازی ================== */
+/* ================== تیراندازی بازیکن ================== */
 const raycaster = new THREE.Raycaster();
 const screenCenter = new THREE.Vector2(0, 0);
 
@@ -376,25 +428,73 @@ function tryShoot() {
   sfx.shoot();
 
   raycaster.setFromCamera(screenCenter, camera);
-  const enemyMeshes = enemies.map(e => e.mesh);
-  const enemyHits = raycaster.intersectObjects(enemyMeshes, false);
+  const targets = enemies.map(e => e.mesh);
+  if (boss) targets.push(boss.mesh);
+  const enemyHits = raycaster.intersectObjects(targets, false);
   const obstacleHits = raycaster.intersectObjects(obstacles, false);
 
   const eh = enemyHits[0], oh = obstacleHits[0];
   if (eh && (!oh || eh.distance < oh.distance)) {
-    const idx = enemyMeshes.indexOf(eh.object);
-    if (idx >= 0) {
-      // تشخیص هدشات: نقطهٔ برخورد بالاتر از مرکز دشمن + 0.4
-      const e = enemies[idx];
-      const hitY = eh.point.y;
-      const headThreshold = e.mesh.position.y + 0.35 * e.size;
-      const isHead = hitY > headThreshold;
-      damageEnemy(idx, isHead);
+    if (boss && eh.object === boss.mesh) {
+      const isHead = eh.point.y > boss.mesh.position.y + boss.size * 0.4;
+      damageBoss(isHead ? 2 : 1, isHead);
+    } else {
+      const idx = enemies.findIndex(e => e.mesh === eh.object);
+      if (idx >= 0) {
+        const e = enemies[idx];
+        const isHead = eh.point.y > e.mesh.position.y + 0.35 * e.size;
+        damageEnemy(idx, isHead);
+      }
     }
   } else if (oh) {
-    // جرقه روی مانع
     spawnBlood(oh.point, 0xaaaaaa);
   }
+}
+
+function damageBoss(dmg, isHead) {
+  boss.hp -= dmg;
+  spawnBlood(boss.mesh.position.clone().setY(boss.mesh.position.y + (isHead?boss.size*0.5:0)), isHead ? 0xffdd00 : 0xaa22ff);
+  if (isHead) sfx.head(); else sfx.hit();
+  showHitmarker(isHead);
+  bossFillEl.style.width = Math.max(0, (boss.hp / boss.maxHp) * 100) + '%';
+  if (boss.hp <= 0) killBoss();
+}
+
+function killBoss() {
+  const pos = boss.mesh.position.clone();
+  scene.remove(boss.mesh);
+  const s = boss.size;
+  // انفجار بزرگ
+  for (let i = 0; i < 40; i++) {
+    const p = new THREE.Mesh(new THREE.BoxGeometry(0.25,0.25,0.25), new THREE.MeshBasicMaterial({ color: i%3 ? 0xaa22ff : 0xff66ff }));
+    p.position.copy(pos);
+    p.userData = {
+      vel: new THREE.Vector3((Math.random()-0.5)*14, Math.random()*10+3, (Math.random()-0.5)*14),
+      life: 1.0 + Math.random()*0.6, gravity: 12,
+    };
+    scene.add(p);
+    particles.push(p);
+  }
+  const flash = new THREE.PointLight(0xcc44ff, 30, 25);
+  flash.position.copy(pos);
+  scene.add(flash);
+  setTimeout(() => scene.remove(flash), 400);
+
+  sfx.bossDie();
+
+  // جایزه: پیکاپ‌های زیاد
+  for (let i = 0; i < 3; i++) spawnPickup(['health','armor','ammo'][Math.floor(Math.random()*3)], pos);
+  spawnPickup('grenade', pos.clone().add(new THREE.Vector3(1,0,0)));
+
+  player.score += 200 + waveNum * 50;
+  boss = null;
+  bossBarEl.style.display = 'none';
+  updateHUD();
+
+  // موج تموم
+  betweenWaves = true;
+  waveTimer = 0;
+  flashWave(`موج ${waveNum} تمام! 🎉`);
 }
 
 function damageEnemy(idx, isHead) {
@@ -404,13 +504,11 @@ function damageEnemy(idx, isHead) {
   spawnBlood(e.mesh.position.clone().setY(e.mesh.position.y + (isHead ? 0.6*e.size : 0)), isHead ? 0xffdd00 : 0xaa2222);
   if (isHead) sfx.head(); else sfx.hit();
   showHitmarker(isHead);
-
   if (e.hp <= 0) killEnemy(idx, false, isHead);
 }
 
 function killEnemy(idx, byGrenade, wasHead=false) {
   const e = enemies[idx];
-  // ذرات انفجار
   for (let i = 0; i < 8; i++) {
     const p = new THREE.Mesh(new THREE.BoxGeometry(0.15,0.15,0.15), new THREE.MeshBasicMaterial({ color: 0xff3333 }));
     p.position.copy(e.mesh.position);
@@ -421,21 +519,27 @@ function killEnemy(idx, byGrenade, wasHead=false) {
     scene.add(p);
     particles.push(p);
   }
+  const dropPos = e.mesh.position.clone();
   scene.remove(e.mesh);
   enemies.splice(idx, 1);
 
   // امتیاز
-  let base = e.type==='tank' ? 30 : e.type==='fast' ? 20 : e.type==='flank' ? 25 : 10;
+  let base = e.type==='tank' ? 30 : e.type==='fast' ? 20 : e.type==='flank' ? 25 : e.type==='shooter' ? 22 : 10;
   if (wasHead) base *= 2;
   if (byGrenade) base = Math.round(base * 0.7);
-
-  // ضریب کمبو
   const comboMult = Math.min(comboCount, 5);
-  player.score += base * (1 + comboMult * 0.2) | 0;
+  player.score += Math.round(base * (1 + comboMult * 0.2));
 
   addCombo();
   sfx.kill();
   updateHUD();
+
+  // drop پیکاپ
+  const r = Math.random();
+  if (r < 0.08) spawnPickup('health', dropPos);
+  else if (r < 0.18) spawnPickup('armor', dropPos);
+  else if (r < 0.35) spawnPickup('ammo', dropPos);
+  else if (r < 0.41) spawnPickup('grenade', dropPos);
 }
 
 function doReload() {
@@ -454,13 +558,92 @@ function doReload() {
   }, 1400);
 }
 
+/* ================== نارنجک ================== */
+const grenades = [];
+const grenadeGeo = new THREE.SphereGeometry(0.15, 8, 8);
+const grenadeMat = new THREE.MeshLambertMaterial({ color: 0x334422 });
+
+function throwGrenade() {
+  if (grenade.count <= 0 || grenade.throwing) return;
+  grenade.count--;
+  grenade.throwing = true;
+  updateGrenadeUI();
+  sfx.nadeThrow();
+
+  const mesh = new THREE.Mesh(grenadeGeo, grenadeMat.clone());
+  const startPos = new THREE.Vector3();
+  camera.getWorldPosition(startPos);
+  startPos.y -= 0.1;
+  mesh.position.copy(startPos);
+  scene.add(mesh);
+
+  const dirVec = new THREE.Vector3();
+  camera.getWorldDirection(dirVec);
+  const vel = dirVec.clone().multiplyScalar(18);
+  vel.y += 4;
+
+  grenades.push({ mesh, vel, fuse: 2.5 });
+  gunKick = 1.5;
+  setTimeout(() => grenade.throwing = false, 500);
+}
+
+function explodeGrenade(g) {
+  const pos = g.mesh.position.clone();
+  scene.remove(g.mesh);
+  const idx = grenades.indexOf(g);
+  if (idx >= 0) grenades.splice(idx, 1);
+
+  const flash = new THREE.PointLight(0xffaa33, 20, 15);
+  flash.position.copy(pos);
+  scene.add(flash);
+  const flashMesh = new THREE.Mesh(new THREE.SphereGeometry(2, 12, 12), new THREE.MeshBasicMaterial({ color:0xffaa33, transparent:true, opacity:0.6 }));
+  flashMesh.position.copy(pos);
+  scene.add(flashMesh);
+  setTimeout(() => { scene.remove(flash); scene.remove(flashMesh); }, 200);
+
+  for (let i = 0; i < 20; i++) {
+    const p = new THREE.Mesh(new THREE.BoxGeometry(0.15,0.15,0.15), new THREE.MeshBasicMaterial({ color: i%2 ? 0xffaa33 : 0xff5522 }));
+    p.position.copy(pos);
+    p.userData = {
+      vel: new THREE.Vector3((Math.random()-0.5)*12, Math.random()*8+2, (Math.random()-0.5)*12),
+      life: 0.7 + Math.random()*0.4, gravity: 12,
+    };
+    scene.add(p);
+    particles.push(p);
+  }
+  sfx.explode();
+
+  const R = 5;
+  for (let i = enemies.length - 1; i >= 0; i--) {
+    const e = enemies[i];
+    const d = e.mesh.position.distanceTo(pos);
+    if (d < R) {
+      const dmg = Math.max(1, Math.round((1 - d/R) * 5));
+      e.hp -= dmg;
+      const push = new THREE.Vector3().subVectors(e.mesh.position, pos).normalize().multiplyScalar(2);
+      e.mesh.position.add(push);
+      if (e.hp <= 0) killEnemy(i, true);
+    }
+  }
+  if (boss) {
+    const d = boss.mesh.position.distanceTo(pos);
+    if (d < R + boss.size * 0.5) {
+      const dmg = Math.max(1, Math.round((1 - d/(R+boss.size*0.5)) * 6));
+      damageBoss(dmg, false);
+    }
+  }
+  const distP = player.pos.distanceTo(pos);
+  if (distP < R) damagePlayer(Math.round((1 - distP/R) * 40));
+}
+
 /* ================== UI ================== */
 function updateHUD() {
   document.getElementById('score').textContent = player.score;
   document.getElementById('waveNum').textContent = waveNum;
-  document.getElementById('enemyCount').textContent = enemies.length + enemiesLeftInWave;
+  document.getElementById('enemyCount').textContent = enemies.length + enemiesLeftInWave + (boss ? 1 : 0);
   document.getElementById('hp').textContent = Math.max(0, Math.round(player.hp));
-  document.getElementById('healthFill').style.width = Math.max(0, player.hp) + '%';
+  document.getElementById('healthFill').style.width = Math.max(0, (player.hp/player.maxHp)*100) + '%';
+  document.getElementById('armorFill').style.width = Math.max(0, (player.armor/player.maxArmor)*100) + '%';
 }
 function updateAmmoUI() {
   document.getElementById('mag').textContent = weapon.mag;
@@ -468,8 +651,6 @@ function updateAmmoUI() {
 }
 function updateGrenadeUI() {
   document.getElementById('nades').textContent = grenade.count;
-  const b = document.getElementById('btnGrenade');
-  if (b) b.classList.toggle('dim', grenade.count === 0);
 }
 function showHitmarker(isHead) {
   const h = document.getElementById('hitmarker');
@@ -478,12 +659,23 @@ function showHitmarker(isHead) {
   setTimeout(() => h.style.opacity = '0', 130);
 }
 function damagePlayer(amount) {
+  // زره جذب
+  if (player.armor > 0) {
+    const absorb = Math.min(player.armor, amount * 0.7);
+    player.armor -= absorb;
+    amount -= absorb;
+    const af = document.getElementById('armorFlash');
+    af.style.opacity = '0.8';
+    setTimeout(() => af.style.opacity = '0', 180);
+  }
   player.hp -= amount;
   sfx.hurt();
   resetCombo();
-  const f = document.getElementById('damageFlash');
-  f.style.opacity = '0.9';
-  setTimeout(() => f.style.opacity = '0', 200);
+  if (amount > 0) {
+    const f = document.getElementById('damageFlash');
+    f.style.opacity = '0.9';
+    setTimeout(() => f.style.opacity = '0', 200);
+  }
   updateHUD();
   if (player.hp <= 0) gameOver();
 }
@@ -516,27 +708,35 @@ function renderBoard(current) {
   el.innerHTML = html;
 }
 
-/* ================== وضعیت موج ================== */
+/* ================== موج‌ها ================== */
 let running = false, waveNum = 0, waveTimer = 0, spawnTimer = 0;
-const SPAWN_INTERVAL = 1.2;
 let enemiesLeftInWave = 0, betweenWaves = false;
+let pickupTimer = 0;
+
+function getSpawnInterval() {
+  return Math.max(0.35, 1.2 - waveNum * 0.05);
+}
+function getEnemyCount() {
+  if (waveNum < 10) return 4 + waveNum * 2;
+  return 4 + waveNum * 2 + Math.pow(waveNum - 9, 2) * 2;
+}
 
 function startWave(n) {
   waveNum = n;
-  enemiesLeftInWave = 4 + n * 2;
+  enemiesLeftInWave = getEnemyCount();
   betweenWaves = false;
   spawnTimer = 0;
   sfx.wave();
   flashWave(`موج ${n}`);
-  // پاداش نارنجک
   if (n % 2 === 0) { grenade.count = Math.min(grenade.maxCount, grenade.count + 1); updateGrenadeUI(); }
+  if (n >= 10) flashWave(`موج ${n} 💀`);
   updateHUD();
 }
 function flashWave(text) {
   const el = document.getElementById('wave');
   el.textContent = text;
   el.style.opacity = '1';
-  setTimeout(() => el.style.opacity = '0', 900);
+  setTimeout(() => el.style.opacity = '0', 1000);
 }
 
 function gameOver() {
@@ -553,19 +753,22 @@ function gameOver() {
 
 function resetGame() {
   enemies.forEach(e => scene.remove(e.mesh)); enemies.length = 0;
+  if (boss) { scene.remove(boss.mesh); boss = null; }
+  bossBarEl.style.display = 'none';
   grenades.forEach(g => scene.remove(g.mesh)); grenades.length = 0;
   particles.forEach(p => scene.remove(p)); particles.length = 0;
+  bullets.forEach(b => scene.remove(b.mesh)); bullets.length = 0;
+  pickups.forEach(p => scene.remove(p)); pickups.length = 0;
 
   player.pos.set(0, 1.7, 0);
   player.vel.set(0, 0, 0);
-  player.hp = 100; player.score = 0; player.onGround = true;
+  player.hp = 100; player.armor = 0; player.score = 0; player.onGround = true;
   yaw = 0; pitch = 0;
-  weapon.mag = weapon.magSize;
-  weapon.reserve = 120;
-  weapon.reloading = false;
+  weapon.mag = weapon.magSize; weapon.reserve = 120; weapon.reloading = false;
   grenade.count = 3; grenade.throwing = false;
   waveNum = 0; waveTimer = 0; betweenWaves = true;
   comboCount = 0; comboTime = 0;
+  pickupTimer = 0;
 
   updateAmmoUI(); updateGrenadeUI(); updateHUD();
 }
@@ -603,7 +806,6 @@ if (isTouch) {
   const knob = document.getElementById('joyKnob');
   const JOY_R = 50;
   let joyId = null;
-
   const updateKnob = t => {
     const r = joy.getBoundingClientRect();
     const cx = r.left + r.width/2, cy = r.top + r.height/2;
@@ -646,7 +848,7 @@ if (isTouch) {
   document.getElementById('btnGrenade').addEventListener('touchstart',e => { e.preventDefault(); wantGrenade = true; }, { passive:false });
 }
 
-/* ================== برخورد بازیکن ================== */
+/* ================== برخورد ================== */
 function collidePlayer(pos) {
   const r = 0.4;
   for (const ob of obstacles) {
@@ -666,7 +868,7 @@ function animate() {
   const now = performance.now();
 
   if (running) {
-    // حرکت
+    // --- ورودی حرکت ---
     if (isDesktop) {
       moveInput.set(0, 0);
       if (keys['KeyW']) moveInput.y += 1;
@@ -701,53 +903,83 @@ function animate() {
     // کمبو
     if (comboTime > 0) { comboTime -= dt; if (comboTime <= 0) resetCombo(); }
 
-    // موج‌ها
+    // پیکاپ اسپاون تصادفی
+    pickupTimer += dt;
+    if (pickupTimer > 8) {
+      pickupTimer = 0;
+      const types = ['health','armor','ammo','grenade'];
+      const t = types[Math.floor(Math.random() * types.length)];
+      spawnPickup(t);
+    }
+
+    // پیکاپ انیمیشن و جمع
+    for (let i = pickups.length - 1; i >= 0; i--) {
+      const p = pickups[i];
+      p.rotation.y += dt * 2;
+      p.position.y = 0.5 + Math.sin(now * 0.003 + p.userData.bobPhase) * 0.15;
+      // انقضای ۲۰ ثانیه
+      if (now - p.userData.bornAt > 20000) { scene.remove(p); pickups.splice(i,1); continue; }
+      // جمع توسط بازیکن
+      if (p.position.distanceTo(player.pos) < 1.2) collectPickup(p);
+    }
+
+    // --- مدیریت موج و باس ---
     if (betweenWaves) {
       waveTimer += dt;
       if (waveTimer > 2.5) { startWave(waveNum + 1); waveTimer = 0; }
     } else {
       if (enemiesLeftInWave > 0) {
         spawnTimer += dt;
-        if (spawnTimer >= SPAWN_INTERVAL && enemies.length < 14) {
+        const si = getSpawnInterval();
+        const cap = waveNum >= 10 ? 22 : 16;
+        if (spawnTimer >= si && enemies.length < cap) {
           spawnEnemy(waveNum);
           enemiesLeftInWave--;
           spawnTimer = 0;
           updateHUD();
         }
-      } else if (enemies.length === 0) {
-        betweenWaves = true;
-        waveTimer = 0;
-        flashWave(`موج ${waveNum} تمام!`);
+      } else if (enemies.length === 0 && !boss) {
+        // همه بات‌ها مردن → باس
+        spawnBoss(waveNum);
+        updateHUD();
       }
     }
 
-    // AI دشمن
+    // --- AI دشمنان عادی ---
     for (const e of enemies) {
       const toPlayer = new THREE.Vector3().subVectors(player.pos, e.mesh.position);
       toPlayer.y = 0;
       const dist = toPlayer.length();
       const dirXZ = toPlayer.clone().normalize();
 
-      // flank: دور بازیکن بچرخ
       let moveVec = new THREE.Vector3();
-      if (e.type === 'flank' && dist > e.preferDist) {
-        // موازی + نزدیک شدن
+      if (e.type === 'shooter') {
+        if (dist > e.preferDist + 2) moveVec.copy(dirXZ);
+        else if (dist < e.preferDist - 2) moveVec.copy(dirXZ).negate();
+        else {
+          // strafe
+          moveVec.set(-dirXZ.z, 0, dirXZ.x).multiplyScalar(e.orbitDir * 0.8);
+        }
+      } else if (e.type === 'flank') {
         const perp = new THREE.Vector3(-dirXZ.z, 0, dirXZ.x).multiplyScalar(e.orbitDir);
-        moveVec.copy(dirXZ).multiplyScalar(0.3).add(perp);
+        if (dist > e.preferDist) moveVec.copy(dirXZ).multiplyScalar(0.4).add(perp);
+        else moveVec.copy(perp);
         moveVec.normalize();
       } else {
         moveVec.copy(dirXZ);
       }
-      if (dist > e.preferDist) {
-        e.mesh.position.addScaledVector(moveVec, e.speed * dt);
-      } else if (e.type === 'flank') {
-        // در فاصله مناسب، دور بزن
-        const perp = new THREE.Vector3(-dirXZ.z, 0, dirXZ.x).multiplyScalar(e.orbitDir);
-        e.mesh.position.addScaledVector(perp, e.speed * 0.7 * dt);
-      }
 
-      // چهره به بازیکن
+      if (moveVec.lengthSq() > 0) e.mesh.position.addScaledVector(moveVec, e.speed * dt);
       e.mesh.lookAt(player.pos.x, e.mesh.position.y, player.pos.z);
+
+      // شلیک
+      if (e.type === 'shooter' && dist < 16 && now - e.lastShot > e.shootInterval) {
+        e.lastShot = now;
+        const from = e.mesh.position.clone();
+        from.y += 0.6 * e.size;
+        spawnEnemyBullet(from, player.pos.clone(), 8, 16);
+        sfx.enemyShoot();
+      }
 
       // آسیب تماس
       if (dist < 1.2 && now - e.lastDamage > 500) {
@@ -756,34 +988,89 @@ function animate() {
       }
     }
 
-    // نارنجک‌ها
+    // --- AI باس ---
+    if (boss) {
+      boss.spin += dt;
+      boss.mesh.rotation.y += dt * 0.6;
+      boss.mesh.rotation.x = Math.sin(boss.spin * 0.7) * 0.2;
+
+      const toP = new THREE.Vector3().subVectors(player.pos, boss.mesh.position);
+      toP.y = 0;
+      const dist = toP.length();
+      const dirP = toP.clone().normalize();
+      if (dist > boss.size * 0.9) {
+        boss.mesh.position.addScaledVector(dirP, boss.speed * dt);
+      }
+      // شلیک ۳ گلوله
+      if (now - boss.lastShot > 1500) {
+        boss.lastShot = now;
+        const from = boss.mesh.position.clone();
+        from.y += boss.size * 0.5;
+        const baseDir = new THREE.Vector3().subVectors(player.pos, from).normalize();
+        for (let i = -1; i <= 1; i++) {
+          const d = baseDir.clone();
+          const perp = new THREE.Vector3(-d.z, 0, d.x);
+          d.addScaledVector(perp, i * 0.15).normalize();
+          const mesh = new THREE.Mesh(bulletGeo, new THREE.MeshBasicMaterial({ color: 0xcc44ff }));
+          mesh.position.copy(from);
+          scene.add(mesh);
+          bullets.push({ mesh, vel: d.multiplyScalar(15), life: 3, damage: 10 });
+        }
+        sfx.enemyShoot();
+      }
+      // آسیب تماس
+      if (dist < boss.size * 0.7 + 0.8 && now - boss.lastDamage > 600) {
+        boss.lastDamage = now;
+        damagePlayer(25);
+      }
+    }
+
+    // --- گلوله‌های دشمن ---
+    for (let i = bullets.length - 1; i >= 0; i--) {
+      const b = bullets[i];
+      b.mesh.position.addScaledVector(b.vel, dt);
+      b.life -= dt;
+      let remove = false;
+      if (b.life <= 0 || b.mesh.position.y < 0.1 ||
+          Math.abs(b.mesh.position.x) > ARENA || Math.abs(b.mesh.position.z) > ARENA) remove = true;
+      // برخورد با موانع
+      for (const ob of obstacles) {
+        const { w, h, d, x, z } = ob.userData;
+        if (Math.abs(b.mesh.position.x - x) < w/2 &&
+            Math.abs(b.mesh.position.z - z) < d/2 &&
+            b.mesh.position.y < h) { remove = true; break; }
+      }
+      // برخورد با بازیکن
+      if (!remove && b.mesh.position.distanceTo(player.pos) < 0.6) {
+        damagePlayer(b.damage);
+        remove = true;
+      }
+      if (remove) { scene.remove(b.mesh); bullets.splice(i,1); }
+    }
+
+    // --- نارنجک‌ها ---
     for (let i = grenades.length - 1; i >= 0; i--) {
       const g = grenades[i];
       g.fuse -= dt;
       g.vel.y -= 15 * dt;
       g.mesh.position.addScaledVector(g.vel, dt);
-      // برخورد با زمین
       if (g.mesh.position.y < 0.15) { g.mesh.position.y = 0.15; g.vel.y *= -0.4; g.vel.x *= 0.7; g.vel.z *= 0.7; }
-      // برخورد با موانع (ساده)
       for (const ob of obstacles) {
         const { w, h, d, x, z } = ob.userData;
         if (Math.abs(g.mesh.position.x - x) < w/2 + 0.15 &&
             Math.abs(g.mesh.position.z - z) < d/2 + 0.15 &&
             g.mesh.position.y < h + 0.15) {
-          // انعکاس ساده
           g.vel.x *= -0.5; g.vel.z *= -0.5;
           g.mesh.position.addScaledVector(g.vel, dt*2);
         }
       }
-      // چشمک زدن
       if (g.fuse < 1) {
-        g.mesh.material = g.mesh.material.clone();
         g.mesh.material.emissive = new THREE.Color(g.fuse % 0.3 < 0.15 ? 0xff0000 : 0x000000);
       }
       if (g.fuse <= 0) explodeGrenade(g);
     }
 
-    // ذرات
+    // --- ذرات ---
     for (let i = particles.length - 1; i >= 0; i--) {
       const p = particles[i];
       p.userData.vel.y -= (p.userData.gravity || 15) * dt;
@@ -800,11 +1087,10 @@ function animate() {
   camera.rotation.y = yaw;
   camera.rotation.x = pitch;
 
-  // انیمیشن اسلحه
+  // اسلحه
   gunKick = Math.max(0, gunKick - dt * 8);
   gunGroup.position.z = -0.4 + gunKick * 0.15;
   gunGroup.rotation.x = gunKick * 0.3;
-
   if (running && (Math.abs(moveInput.x) > 0.1 || Math.abs(moveInput.y) > 0.1)) {
     const t = performance.now() * 0.012;
     camera.position.y = player.pos.y + Math.sin(t) * 0.04;
